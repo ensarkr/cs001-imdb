@@ -4,11 +4,12 @@ import {
   requestNewRequestToken,
   requestUserDetailsViaSessionID,
 } from "../../../functions/requests";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 
 export default function SignIn() {
   const [params] = useSearchParams();
+  const navigate = useNavigate();
   const auth = useAuth();
 
   useEffect(() => {
@@ -24,12 +25,14 @@ export default function SignIn() {
 
         if (user.status) {
           auth.updateAuth(user.value, res.value.sessionID);
+          navigate("/");
         }
       }
     }
   };
 
   const handleClick = async () => {
+    auth.signOut();
     const token = await requestNewRequestToken();
 
     if (!token.status) return;

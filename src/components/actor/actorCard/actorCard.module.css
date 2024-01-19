@@ -1,0 +1,31 @@
+.main {
+  width: var(--card-width);
+  text-decoration: none;
+}
+
+.main:hover {
+  opacity: 0.8;
+}
+
+.image {
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.name {
+  color: white;
+  text-align: center;
+  font-size: 1rem;
+  height: 1.2rem;
+
+  text-overflow: ellipsis;
+  line-clamp: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

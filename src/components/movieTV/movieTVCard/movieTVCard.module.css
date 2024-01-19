@@ -1,0 +1,102 @@
+.main {
+  overflow: hidden;
+  background-color: var(--card-color);
+  width: var(--card-width);
+  text-decoration: none;
+}
+
+.image {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: contain;
+}
+
+.content {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+}
+
+.vote {
+  color: var(--gray-color);
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.vote > svg {
+  padding-bottom: 0.2rem;
+}
+
+.vote > span {
+  color: var(--gray-color);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.title {
+  color: white;
+  font-size: 1rem;
+  height: 2.5rem;
+
+  text-overflow: ellipsis;
+  line-clamp: 2;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.title:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.watchList {
+  height: 2rem;
+  font-size: 0.8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff14;
+  color: var(--blue-color);
+  font-weight: 600;
+  border-radius: 5px;
+  transition: background-color 100ms;
+}
+
+.watchList:hover {
+  background-color: rgba(36, 86, 180, 0.219);
+}
+
+.watchList > svg {
+  fill: var(--blue-color);
+  width: 1.5rem;
+}
+
+.trailer {
+  height: 2rem;
+  font-size: 0.8rem;
+  padding: 0 10px 0 2px;
+  width: min-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  border-radius: 5px;
+  align-self: center;
+  transition: background-color 100ms;
+  text-decoration: none;
+}
+
+.trailer:hover {
+  background-color: #ffffff14;
+}
+
+.trailer > svg {
+  fill: white;
+  width: 1.5rem;
+}

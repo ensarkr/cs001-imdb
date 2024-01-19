@@ -1,0 +1,10 @@
+.layout {
+  width: 100%;
+  min-height: max(500px, 100vh);
+  padding-left: var(--content-left-padding);
+  box-sizing: border-box;
+}
+
+.main {
+  width: var(--content-width);
+}

@@ -1,3 +1,73 @@
+:root {
+  --secondary-color: #f5c518;
+  --blue-color: #5799ef;
+  --gray-color: #ffffffb3;
+  --card-color: #1a1a1a;
+  --paper-color: #121212;
+  --font-family: "Roboto", "Helvetica", sans-serif;
+
+  --content-width: 1280px;
+  --content-left-padding: calc((100vw - (var(--content-width))) / 2);
+  --content-inner-left-padding: 0px;
+
+  --card-per-row: 6;
+  --gap-between-cards: 15px;
+  --card-width: calc(
+    (100cqw - ((var(--card-per-row) - 1) * var(--gap-between-cards))) /
+      var(--card-per-row)
+  );
+}
+
 body {
   margin: 0;
+  background-color: black;
+  font-family: var(--font-family);
+}
+
+button {
+  margin: 0;
+  padding: 0;
+  border: none;
+  font: inherit;
+  color: inherit;
+  line-height: normal;
+  cursor: pointer;
+  background: none;
+  overflow: visible;
+}
+
+/* 
+imbd content widths
+
+1280px
+-1280px 
+1024px
+-1024px
+100%
+
+
+600px no search bar
+*/
+
+@media screen and (max-width: 1350px) {
+  :root {
+    --content-width: 1024px;
+  }
+}
+@media screen and (max-width: 1060px) {
+  :root {
+    --content-width: calc(100%);
+    --content-left-padding: 0px;
+    --content-inner-left-padding: 16px;
+
+    --card-per-row: 4.3;
+  }
+}
+@media screen and (max-width: 650px) {
+  :root {
+    --card-per-row: 2.3;
+  }
+  h1 {
+    font-size: 1.5rem;
+  }
 }

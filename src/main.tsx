@@ -1,31 +1,18 @@
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import {
-  Link,
-  Outlet,
-  RouterProvider,
-  createBrowserRouter,
-} from "react-router-dom";
-import SignIn from "./pages/auth/SignIn/SignIn";
-import Navbar from "./components/Navbar/Navbar";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import SignIn from "./pages/auth/signIn/SignIn";
 import { AuthProvider } from "./context/AuthContext";
+import MainLayout from "./pages/mainLayout/MainLayout";
+import Home from "./pages/home/Home";
 
 const router = createBrowserRouter([
   {
-    element: (
-      <>
-        <Navbar></Navbar>
-        <Outlet></Outlet>
-      </>
-    ),
+    element: <MainLayout></MainLayout>,
     children: [
       {
         path: "/",
-        element: (
-          <div>
-            <Link to={"/auth/signIn"}>sign in page</Link>
-          </div>
-        ),
+        element: <Home></Home>,
       },
       {
         path: "/auth/signIn",
