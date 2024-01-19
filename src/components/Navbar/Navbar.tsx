@@ -6,7 +6,7 @@ export default function Navbar() {
 
   return (
     <>
-      {/* <code style={{ color: "white" }}>
+      <code style={{ color: "white" }}>
         {JSON.stringify(auth.user, null, 4)}
       </code>
       {auth.user.status === "user" && (
@@ -14,7 +14,7 @@ export default function Navbar() {
       )}
       {auth.user.status === "guest" && (
         <Link to={"/auth/signIn"}>sign in page</Link>
-      )} */}
+      )}
     </>
   );
 }

@@ -41,6 +41,8 @@ export default function SideScroll({
     };
 
     const resizeFunction = () => {
+      if (didFetchStartRef.current === false) return;
+
       mainRef.current.style.scrollBehavior = "auto";
       mainRef.current.scrollLeft =
         listRef.current.children[
@@ -212,10 +214,10 @@ export function MovieTVSideScroll({
       headerTitleProps={headerTitleProps}
       showButtons={movieTVs.length > 0}
       fetchOperation={fetchOperation}
-      viewerHeight="calc(var(--card-width) * 3 / 2 + 163px)"
+      viewerHeight="calc((var(--card-width) * 3 / 2) + 167.96px)"
     >
       {movieTVs.map((e) => (
-        <MovieTVCard data={e}></MovieTVCard>
+        <MovieTVCard key={e.id} data={e}></MovieTVCard>
       ))}
     </SideScroll>
   );

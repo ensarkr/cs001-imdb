@@ -40,7 +40,6 @@
 }
 
 .list {
-  /* width: calc(100% * (20 / var(--card-per-row))); */
   width: max-content;
   display: flex;
   gap: var(--gap-between-cards);
@@ -69,6 +68,7 @@
   height: 66px;
   transition: opacity 200ms;
 }
+
 .leftButton > svg,
 .rightButton > svg {
   fill: white;

@@ -5,6 +5,8 @@ import SignIn from "./pages/auth/signIn/SignIn";
 import { AuthProvider } from "./context/AuthContext";
 import MainLayout from "./pages/mainLayout/MainLayout";
 import Home from "./pages/home/Home";
+import { FavoritesProvider } from "./context/FavoritesContext";
+import { WatchlistProvider } from "./context/WatchListContext";
 
 const router = createBrowserRouter([
   {
@@ -24,6 +26,10 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <AuthProvider>
-    <RouterProvider router={router} />
+    <FavoritesProvider>
+      <WatchlistProvider>
+        <RouterProvider router={router} />
+      </WatchlistProvider>
+    </FavoritesProvider>
   </AuthProvider>
 );

@@ -1,8 +1,10 @@
 import { actorT } from "./actor";
 import { movieT } from "./movie";
+import { TVT } from "./tv";
 
 function convertDBtoNormalMovie(movie: any): movieT {
   return {
+    type: "movie",
     id: movie.id,
     genreIds: movie.genre_ids,
     title: movie.title,
@@ -16,18 +18,18 @@ function convertDBtoNormalMovies(movies: any[]): movieT[] {
   return movies.map((e) => convertDBtoNormalMovie(e));
 }
 
-function convertDBtoNormalTV(TV: any): movieT {
+function convertDBtoNormalTV(TV: any): TVT {
   return {
+    type: "tv",
     id: TV.id,
     genreIds: TV.genre_ids,
     title: TV.name,
-    originalTitle: TV.original_name,
     backdropPath: TV.backdrop_path,
     posterPath: TV.poster_path,
     voteAverage: TV.vote_average,
   };
 }
-function convertDBtoNormalTVs(TVs: any[]): movieT[] {
+function convertDBtoNormalTVs(TVs: any[]): TVT[] {
   return TVs.map((e) => convertDBtoNormalTV(e));
 }
 

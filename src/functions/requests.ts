@@ -306,6 +306,214 @@ async function requestPopularActors(
   }
 }
 
+type requestAllFavoritesReturnT = {
+  tvs: TVT[];
+  movies: movieT[];
+};
+
+async function requestAllFavorites(
+  accountID: number
+): Promise<doubleReturn<requestAllFavoritesReturnT>> {
+  let currentPage = 1;
+  let pageLimit = 0;
+  const result: requestAllFavoritesReturnT = {
+    tvs: [],
+    movies: [],
+  };
+
+  try {
+    do {
+      const url = `https://api.themoviedb.org/3/account/${accountID}/favorite/tv?language=en-US&sort_by=created_at.asc&page=${currentPage++}`;
+      const options = {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          Authorization: import.meta.env.VITE_TMDB_API_KEY as string,
+        },
+      };
+
+      const res = await fetch(url, options);
+      const data = await res.json();
+
+      if (data.success !== false) {
+        pageLimit = data.total_pages;
+        result.tvs.push(...convertDBtoNormalTVs(data.results));
+      } else {
+        return { status: false, message: "Session denied." };
+      }
+    } while (currentPage <= pageLimit);
+
+    currentPage = 1;
+    pageLimit = 0;
+
+    do {
+      const url = `https://api.themoviedb.org/3/account/${accountID}/favorite/movies?language=en-US&sort_by=created_at.asc&page=${currentPage++}`;
+      const options = {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          Authorization: import.meta.env.VITE_TMDB_API_KEY as string,
+        },
+      };
+
+      const res = await fetch(url, options);
+      const data = await res.json();
+
+      if (data.success !== false) {
+        pageLimit = data.total_pages;
+        result.movies.push(...convertDBtoNormalMovies(data.results));
+      } else {
+        return { status: false, message: "Session denied." };
+      }
+    } while (currentPage <= pageLimit);
+
+    return { status: true, value: result };
+  } catch (error) {
+    return { status: false, message: "Fetch error." };
+  }
+}
+
+async function requestToFavorites(
+  accountID: number,
+  type: "movie" | "tv",
+  id: number,
+  addAction: boolean
+): Promise<doubleReturn<undefined>> {
+  try {
+    const url = `https://api.themoviedb.org/3/account/${accountID}/favorite`;
+    const options = {
+      method: "POST",
+      headers: {
+        accept: "application/json",
+        "content-type": "application/json",
+        Authorization: import.meta.env.VITE_TMDB_API_KEY as string,
+      },
+      body: JSON.stringify({
+        media_type: type,
+        media_id: id,
+        favorite: addAction,
+      }),
+    };
+
+    const res = await fetch(url, options);
+    const data = await res.json();
+
+    if (data.success !== false) {
+      return {
+        status: true,
+      };
+    } else {
+      return { status: false, message: "Session denied." };
+    }
+  } catch (error) {
+    return { status: false, message: "Fetch error." };
+  }
+}
+
+type requestAllWatchlistReturnT = {
+  tvs: TVT[];
+  movies: movieT[];
+};
+
+async function requestAllWatchlist(
+  accountID: number
+): Promise<doubleReturn<requestAllWatchlistReturnT>> {
+  let currentPage = 1;
+  let pageLimit = 0;
+  const result: requestAllWatchlistReturnT = {
+    tvs: [],
+    movies: [],
+  };
+
+  try {
+    do {
+      const url = `https://api.themoviedb.org/3/account/${accountID}/watchlist/tv?language=en-US&sort_by=created_at.asc&page=${currentPage++}`;
+      const options = {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          Authorization: import.meta.env.VITE_TMDB_API_KEY as string,
+        },
+      };
+
+      const res = await fetch(url, options);
+      const data = await res.json();
+
+      if (data.success !== false) {
+        pageLimit = data.total_pages;
+        result.tvs.push(...convertDBtoNormalTVs(data.results));
+      } else {
+        return { status: false, message: "Session denied." };
+      }
+    } while (currentPage <= pageLimit);
+
+    currentPage = 1;
+    pageLimit = 0;
+
+    do {
+      const url = `https://api.themoviedb.org/3/account/${accountID}/watchlist/movies?language=en-US&sort_by=created_at.asc&page=${currentPage++}`;
+      const options = {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          Authorization: import.meta.env.VITE_TMDB_API_KEY as string,
+        },
+      };
+
+      const res = await fetch(url, options);
+      const data = await res.json();
+
+      if (data.success !== false) {
+        pageLimit = data.total_pages;
+        result.movies.push(...convertDBtoNormalMovies(data.results));
+      } else {
+        return { status: false, message: "Session denied." };
+      }
+    } while (currentPage <= pageLimit);
+
+    return { status: true, value: result };
+  } catch (error) {
+    return { status: false, message: "Fetch error." };
+  }
+}
+
+async function requestToWatchlist(
+  accountID: number,
+  type: "movie" | "tv",
+  id: number,
+  addAction: boolean
+): Promise<doubleReturn<undefined>> {
+  try {
+    const url = `https://api.themoviedb.org/3/account/${accountID}/watchlist`;
+    const options = {
+      method: "POST",
+      headers: {
+        accept: "application/json",
+        "content-type": "application/json",
+        Authorization: import.meta.env.VITE_TMDB_API_KEY as string,
+      },
+      body: JSON.stringify({
+        media_type: type,
+        media_id: id,
+        watchlist: addAction,
+      }),
+    };
+
+    const res = await fetch(url, options);
+    const data = await res.json();
+
+    if (data.success !== false) {
+      return {
+        status: true,
+      };
+    } else {
+      return { status: false, message: "Session denied." };
+    }
+  } catch (error) {
+    return { status: false, message: "Fetch error." };
+  }
+}
+
 export {
   requestNewRequestToken,
   requestSessionID,
@@ -317,4 +525,8 @@ export {
   requestNowPlayingMovies,
   requestUpcomingMovies,
   requestPopularActors,
+  requestAllFavorites,
+  requestToFavorites,
+  requestAllWatchlist,
+  requestToWatchlist,
 };

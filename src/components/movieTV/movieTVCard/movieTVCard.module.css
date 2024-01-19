@@ -3,6 +3,11 @@
   background-color: var(--card-color);
   width: var(--card-width);
   text-decoration: none;
+  position: relative;
+  gap: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .image {
@@ -17,6 +22,13 @@
   flex-direction: column;
   gap: 8px;
   padding: 8px;
+}
+
+.votePart {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 1.5rem;
 }
 
 .vote {
@@ -50,6 +62,7 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
 .title:hover {
   text-decoration: underline;
   cursor: pointer;
@@ -70,6 +83,10 @@
 
 .watchList:hover {
   background-color: rgba(36, 86, 180, 0.219);
+}
+
+.watchList > span {
+  padding-right: 7px;
 }
 
 .watchList > svg {
@@ -99,4 +116,54 @@
 .trailer > svg {
   fill: white;
   width: 1.5rem;
+}
+
+.favorite {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  aspect-ratio: 1;
+}
+
+.favorite svg {
+  width: 1.4rem;
+  aspect-ratio: 1;
+  padding-top: 5px;
+  box-sizing: border-box;
+}
+
+.loader {
+  width: 1rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 2px solid #0000;
+  border-right-color: #ffa50097;
+  position: relative;
+  animation: l24 1s infinite linear;
+}
+
+.blueLoader {
+  border-right-color: var(--blue-color);
+  width: 1rem;
+}
+
+.loader:before,
+.loader:after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border: inherit;
+  animation: inherit;
+  animation-duration: 2s;
+}
+
+.loader :after {
+  animation-duration: 4s;
+}
+
+@keyframes l24 {
+  100% {
+    transform: rotate(1turn);
+  }
 }

@@ -1,4 +1,5 @@
 type movieT = {
+  type: "movie";
   id: number;
   genreIds: number[];
   title: string;

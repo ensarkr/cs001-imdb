@@ -1,4 +1,5 @@
 type TVT = {
+  type: "tv";
   id: number;
   genreIds: number[];
   title: string;
