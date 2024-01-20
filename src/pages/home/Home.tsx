@@ -1,6 +1,7 @@
 import BigHeaderTitle from "../../components/bigHeaderTitle/BigHeaderTitle";
 import {
   ActorSideScroll,
+  FromYourWatchlistSideScroll,
   MovieTVSideScroll,
 } from "../../components/sideScroll/SideScroll";
 import {
@@ -29,6 +30,8 @@ export default function Home() {
         }}
         fetchFunction={requestPopularMovies}
       ></MovieTVSideScroll>
+
+      <FromYourWatchlistSideScroll></FromYourWatchlistSideScroll>
 
       <MovieTVSideScroll
         headerTitleProps={{

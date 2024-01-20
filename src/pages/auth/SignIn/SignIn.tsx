@@ -37,7 +37,9 @@ export default function SignIn() {
 
     if (!token.status) return;
 
-    window.location.href = `https://www.themoviedb.org/authenticate/${token.value.requestToken}?redirect_to=http://localhost:5173/auth/signIn`;
+    window.location.href = `https://www.themoviedb.org/authenticate/${
+      token.value.requestToken
+    }?redirect_to=${import.meta.env.VITE_SITE_URL + "auth/signin"}`;
   };
 
   return (

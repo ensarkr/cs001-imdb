@@ -1,14 +1,17 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "../../components/navbar/Navbar";
-import styles from "./mainLayout.module.css";
+import { useLayoutEffect } from "react";
 
 export default function MainLayout() {
+  const location = useLocation();
+  useLayoutEffect(() => {
+    document.documentElement.scrollTo(0, 0);
+  }, [location.pathname]);
+
   return (
-    <div className={styles.layout}>
-      <main className={styles.main}>
-        <Navbar></Navbar>
-        <Outlet></Outlet>
-      </main>
-    </div>
+    <>
+      <Navbar></Navbar>
+      <Outlet></Outlet>
+    </>
   );
 }

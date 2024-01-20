@@ -1,4 +1,5 @@
 type userT = {
+  sessionID: string;
   username: string;
   name: string;
   accountID: number;

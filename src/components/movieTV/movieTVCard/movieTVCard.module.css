@@ -8,6 +8,30 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  box-sizing: border-box;
+  padding: 1px;
+}
+
+.whiteBackground {
+  background-color: white;
+  padding: 0;
+  border: 1px solid gray;
+  border-radius: 5px;
+}
+
+.whiteBackground .title,
+.whiteBackground .vote > span,
+.whiteBackground .trailer {
+  color: black;
+}
+
+.whiteBackground .watchList,
+.whiteBackground .trailer:hover {
+  background-color: #00000031;
+}
+
+.whiteBackground .trailer > svg {
+  fill: black;
 }
 
 .image {

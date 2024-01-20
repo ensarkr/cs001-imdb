@@ -16,6 +16,12 @@
     (100cqw - ((var(--card-per-row) - 1) * var(--gap-between-cards))) /
       var(--card-per-row)
   );
+
+  --videos-per-row: 4;
+  --video-width: calc(
+    (100cqw - ((var(--videos-per-row) - 1) * var(--gap-between-cards))) /
+      var(--videos-per-row)
+  );
 }
 
 body {
@@ -52,6 +58,7 @@ imbd content widths
 @media screen and (max-width: 1350px) {
   :root {
     --content-width: 1024px;
+    --videos-per-row: 3;
   }
 }
 @media screen and (max-width: 1060px) {
@@ -61,11 +68,13 @@ imbd content widths
     --content-inner-left-padding: 16px;
 
     --card-per-row: 4.3;
+    --videos-per-row: 2;
   }
 }
 @media screen and (max-width: 650px) {
   :root {
     --card-per-row: 2.3;
+    --videos-per-row: 1;
   }
   h1 {
     font-size: 1.5rem;

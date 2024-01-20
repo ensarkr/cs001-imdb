@@ -34,7 +34,7 @@ function FavoritesProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (auth.user.status === "user") {
-      fetchAndSetFavorites(auth.user.data.accountID);
+      fetchAndSetFavorites(auth.user.data.accountID, auth.user.data.sessionID);
     }
 
     if (auth.user.status === "guest") {
@@ -42,8 +42,8 @@ function FavoritesProvider({ children }: { children: ReactNode }) {
     }
   }, [auth.user.status]);
 
-  const fetchAndSetFavorites = async (accountID: number) => {
-    const res = await requestAllFavorites(accountID);
+  const fetchAndSetFavorites = async (accountID: number, sessionID: string) => {
+    const res = await requestAllFavorites(accountID, sessionID);
 
     if (res.status) {
       setFavorites({ status: "user", ...res.value });
@@ -85,7 +85,8 @@ function useFavorites() {
         auth.user.data.accountID,
         movieTV.type,
         movieTV.id,
-        true
+        true,
+        auth.user.data.sessionID
       );
 
       if (res.status) {
@@ -118,7 +119,8 @@ function useFavorites() {
         auth.user.data.accountID,
         movieTV.type,
         movieTV.id,
-        false
+        false,
+        auth.user.data.sessionID
       );
 
       if (res.status) {

@@ -35,7 +35,7 @@ function WatchlistProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (auth.user.status === "user") {
-      fetchAndSetWatchlist(auth.user.data.accountID);
+      fetchAndSetWatchlist(auth.user.data.accountID, auth.user.data.sessionID);
     }
 
     if (auth.user.status === "guest") {
@@ -43,8 +43,8 @@ function WatchlistProvider({ children }: { children: ReactNode }) {
     }
   }, [auth.user.status]);
 
-  const fetchAndSetWatchlist = async (accountID: number) => {
-    const res = await requestAllWatchlist(accountID);
+  const fetchAndSetWatchlist = async (accountID: number, sessionID: string) => {
+    const res = await requestAllWatchlist(accountID, sessionID);
 
     if (res.status) {
       SetWatchlist({ status: "user", ...res.value });
@@ -86,7 +86,8 @@ function useWatchlist() {
         auth.user.data.accountID,
         movieTV.type,
         movieTV.id,
-        true
+        true,
+        auth.user.data.sessionID
       );
 
       if (res.status) {
@@ -119,7 +120,8 @@ function useWatchlist() {
         auth.user.data.accountID,
         movieTV.type,
         movieTV.id,
-        false
+        false,
+        auth.user.data.sessionID
       );
 
       if (res.status) {

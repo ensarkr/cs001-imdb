@@ -1,12 +1,14 @@
 import { actorT } from "../typings/actor";
 import {
   convertDBtoNormalActors,
+  convertDBtoNormalMovieDetail,
   convertDBtoNormalMovies,
+  convertDBtoNormalTVDetail,
   convertDBtoNormalTVs,
 } from "../typings/conversion";
 import { doubleReturn } from "../typings/global";
-import { movieT } from "../typings/movie";
-import { TVT } from "../typings/tv";
+import { movieDetailT, movieT } from "../typings/movie";
+import { TVDetailT, TVT } from "../typings/tv";
 import { userT } from "../typings/user";
 
 async function requestNewRequestToken(): Promise<
@@ -83,6 +85,7 @@ async function requestUserDetailsViaSessionID(
       return {
         status: true,
         value: {
+          sessionID,
           accountID: data.id,
           avatar: data.avatar,
           name: data.name,
@@ -312,7 +315,8 @@ type requestAllFavoritesReturnT = {
 };
 
 async function requestAllFavorites(
-  accountID: number
+  accountID: number,
+  sessionID: string
 ): Promise<doubleReturn<requestAllFavoritesReturnT>> {
   let currentPage = 1;
   let pageLimit = 0;
@@ -323,7 +327,7 @@ async function requestAllFavorites(
 
   try {
     do {
-      const url = `https://api.themoviedb.org/3/account/${accountID}/favorite/tv?language=en-US&sort_by=created_at.asc&page=${currentPage++}`;
+      const url = `https://api.themoviedb.org/3/account/${accountID}/favorite/tv?session_id=${sessionID}&language=en-US&sort_by=created_at.asc&page=${currentPage++}`;
       const options = {
         method: "GET",
         headers: {
@@ -347,7 +351,7 @@ async function requestAllFavorites(
     pageLimit = 0;
 
     do {
-      const url = `https://api.themoviedb.org/3/account/${accountID}/favorite/movies?language=en-US&sort_by=created_at.asc&page=${currentPage++}`;
+      const url = `https://api.themoviedb.org/3/account/${accountID}/favorite/movies?session_id=${sessionID}&language=en-US&sort_by=created_at.asc&page=${currentPage++}`;
       const options = {
         method: "GET",
         headers: {
@@ -377,10 +381,11 @@ async function requestToFavorites(
   accountID: number,
   type: "movie" | "tv",
   id: number,
-  addAction: boolean
+  addAction: boolean,
+  sessionID: string
 ): Promise<doubleReturn<undefined>> {
   try {
-    const url = `https://api.themoviedb.org/3/account/${accountID}/favorite`;
+    const url = `https://api.themoviedb.org/3/account/${accountID}/favorite?session_id=${sessionID}`;
     const options = {
       method: "POST",
       headers: {
@@ -416,7 +421,8 @@ type requestAllWatchlistReturnT = {
 };
 
 async function requestAllWatchlist(
-  accountID: number
+  accountID: number,
+  sessionID: string
 ): Promise<doubleReturn<requestAllWatchlistReturnT>> {
   let currentPage = 1;
   let pageLimit = 0;
@@ -427,7 +433,7 @@ async function requestAllWatchlist(
 
   try {
     do {
-      const url = `https://api.themoviedb.org/3/account/${accountID}/watchlist/tv?language=en-US&sort_by=created_at.asc&page=${currentPage++}`;
+      const url = `https://api.themoviedb.org/3/account/${accountID}/watchlist/tv?session_id=${sessionID}&language=en-US&sort_by=created_at.asc&page=${currentPage++}`;
       const options = {
         method: "GET",
         headers: {
@@ -451,7 +457,7 @@ async function requestAllWatchlist(
     pageLimit = 0;
 
     do {
-      const url = `https://api.themoviedb.org/3/account/${accountID}/watchlist/movies?language=en-US&sort_by=created_at.asc&page=${currentPage++}`;
+      const url = `https://api.themoviedb.org/3/account/${accountID}/watchlist/movies?session_id=${sessionID}&language=en-US&sort_by=created_at.asc&page=${currentPage++}`;
       const options = {
         method: "GET",
         headers: {
@@ -481,10 +487,11 @@ async function requestToWatchlist(
   accountID: number,
   type: "movie" | "tv",
   id: number,
-  addAction: boolean
+  addAction: boolean,
+  sessionID: string
 ): Promise<doubleReturn<undefined>> {
   try {
-    const url = `https://api.themoviedb.org/3/account/${accountID}/watchlist`;
+    const url = `https://api.themoviedb.org/3/account/${accountID}/watchlist?session_id=${sessionID}`;
     const options = {
       method: "POST",
       headers: {
@@ -514,6 +521,66 @@ async function requestToWatchlist(
   }
 }
 
+async function requestMovieDetails(
+  id: number
+): Promise<doubleReturn<movieDetailT>> {
+  try {
+    const url = `https://api.themoviedb.org/3/movie/${id}?append_to_response=images,videos,credits,similar,reviews`;
+    const options = {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: import.meta.env.VITE_TMDB_API_KEY as string,
+      },
+    };
+
+    const res = await fetch(url, options);
+    const data = await res.json();
+
+    if (data.success !== false) {
+      return {
+        status: true,
+        value: convertDBtoNormalMovieDetail(data),
+      };
+    } else {
+      return { status: false, message: "Session denied." };
+    }
+  } catch (error) {
+    console.log(error);
+
+    return { status: false, message: "Fetch error." };
+  }
+}
+
+async function requestTVDetails(id: number): Promise<doubleReturn<TVDetailT>> {
+  try {
+    const url = `https://api.themoviedb.org/3/tv/${id}?append_to_response=images,videos,credits,similar,reviews`;
+    const options = {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: import.meta.env.VITE_TMDB_API_KEY as string,
+      },
+    };
+
+    const res = await fetch(url, options);
+    const data = await res.json();
+
+    if (data.success !== false) {
+      return {
+        status: true,
+        value: convertDBtoNormalTVDetail(data),
+      };
+    } else {
+      return { status: false, message: "Session denied." };
+    }
+  } catch (error) {
+    console.log(error);
+
+    return { status: false, message: "Fetch error." };
+  }
+}
+
 export {
   requestNewRequestToken,
   requestSessionID,
@@ -529,4 +596,6 @@ export {
   requestToFavorites,
   requestAllWatchlist,
   requestToWatchlist,
+  requestMovieDetails,
+  requestTVDetails,
 };

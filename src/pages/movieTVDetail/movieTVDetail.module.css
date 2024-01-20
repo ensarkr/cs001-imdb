@@ -1,0 +1,45 @@
+.mainDetail {
+  background-color: white;
+  padding-bottom: 50px;
+}
+
+.content {
+  width: var(--content-width);
+  padding-left: var(--content-left-padding);
+  padding-top: 15px;
+  display: flex;
+  gap: 25px;
+  flex-direction: column;
+}
+
+.video {
+  aspect-ratio: 16/9;
+  width: 100%;
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.videoDiv {
+  width: var(--video-width);
+  overflow: hidden;
+}
+
+.videoDiv > p {
+  width: var(--video-width);
+  margin: 0;
+  height: 1.2rem;
+
+  text-overflow: ellipsis;
+  line-clamp: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.image {
+  aspect-ratio: 1;
+  width: var(--card-width);
+  object-fit: cover;
+}
