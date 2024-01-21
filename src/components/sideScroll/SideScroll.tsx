@@ -1,13 +1,17 @@
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { ReactNode, memo, useEffect, useRef, useState } from "react";
 import styles from "./sideScroll.module.css";
 import HeaderTitle, { headerTitleProps } from "../headerTitle/HeaderTitle";
-import { doubleReturn } from "../../typings/global";
+import { doubleReturn, pageFetchDouble } from "../../typings/global";
 import { movieT } from "../../typings/movie";
 import { TVT } from "../../typings/tv";
 import MovieTVCard from "../movieTV/movieTVCard/MovieTVCard";
 import { actorT } from "../../typings/actor";
 import ActorCard from "../actor/actorCard/ActorCard";
 import { useWatchlist } from "../../context/WatchListContext";
+import DotLoader from "../dotLoader/dotLoader";
+import useFetchPages from "../../hooks/useFetchPages";
+import WatchlistInformation from "../watchlistInformation/WatchlistInformation";
+import { useRecentlyViewed } from "../../context/RecentlyViewedContext";
 
 export default function SideScroll({
   headerTitleProps,
@@ -17,14 +21,14 @@ export default function SideScroll({
   children,
 }: {
   headerTitleProps: headerTitleProps;
-  fetchOperation: () => Promise<boolean>;
+  fetchOperation: () => Promise<doubleReturn<{ maxPage: number }>>;
   showButtons: boolean;
   viewerHeight: string;
   children?: ReactNode;
 }) {
-  const [isLoading, setIsLoading] = useState(true);
-  const didFetchStartRef = useRef<boolean>(false);
-  const [showError, setShowError] = useState(true);
+  const { fetchErrorMessage, fetchNextPage, fetchStatus, didFetchStartRef } =
+    useFetchPages(fetchOperation);
+
   const mainRef = useRef<HTMLDivElement>(null!);
   const listRef = useRef<HTMLDivElement>(null!);
   const currentStartRef = useRef<number>(0);
@@ -37,7 +41,7 @@ export default function SideScroll({
         window.scrollY + window.innerHeight > mainRect.top &&
         didFetchStartRef.current === false
       ) {
-        startFetching();
+        fetchNextPage();
       }
     };
 
@@ -62,19 +66,6 @@ export default function SideScroll({
       window.removeEventListener("resize", resizeFunction);
     };
   }, []);
-
-  const startFetching = async () => {
-    setIsLoading(true);
-    setShowError(false);
-    didFetchStartRef.current = true;
-    const res = await fetchOperation();
-
-    if (!res) {
-      setShowError(true);
-    }
-
-    setIsLoading(false);
-  };
 
   const scrollTo = async (direction: "left" | "right") => {
     const parentRect = mainRef.current.getBoundingClientRect();
@@ -135,7 +126,7 @@ export default function SideScroll({
           <button
             className={styles.leftButton}
             style={{
-              bottom: `calc((var(--content-inner-left-padding) + ${viewerHeight}) / 2)`,
+              bottom: `calc((var(--content-left-padding) + ${viewerHeight}) / 2)`,
             }}
             onClick={() => scrollTo("left")}
           >
@@ -152,7 +143,7 @@ export default function SideScroll({
           <button
             className={styles.rightButton}
             style={{
-              bottom: `calc((var(--content-inner-left-padding) + ${viewerHeight}) / 2)`,
+              bottom: `calc((var(--content-left-padding) + ${viewerHeight}) / 2)`,
             }}
             onClick={() => scrollTo("right")}
           >
@@ -173,13 +164,11 @@ export default function SideScroll({
         className={styles.viewer}
         style={{ height: viewerHeight }}
       >
-        {isLoading ? (
-          <div className={styles.loader}>
-            <div className={styles.progress} />
-          </div>
-        ) : showError ? (
-          <div onClick={fetchOperation} className={styles.loader}>
-            <p>error occurred</p>
+        {fetchStatus === "loading" ? (
+          <DotLoader color={headerTitleProps.color}></DotLoader>
+        ) : fetchStatus === "error" ? (
+          <div onClick={fetchOperation} className={styles.center}>
+            <p>{fetchErrorMessage}</p>
             <button className={styles.retry}>click to retry</button>
           </div>
         ) : (
@@ -199,7 +188,7 @@ export function SideScrollWithNoFetch({
   viewerHeight,
   children,
 }: {
-  headerTitleProps: headerTitleProps;
+  headerTitleProps?: headerTitleProps;
   viewerHeight: string;
   children?: ReactNode;
 }) {
@@ -282,15 +271,16 @@ export function SideScrollWithNoFetch({
     <div
       className={[
         styles.main,
-        headerTitleProps.color === "black" ? styles.whiteBackground : {},
+        headerTitleProps && headerTitleProps.color === "black"
+          ? styles.whiteBackground
+          : {},
       ].join(" ")}
     >
-      <HeaderTitle {...headerTitleProps}></HeaderTitle>
-      <></>
+      {headerTitleProps && <HeaderTitle {...headerTitleProps}></HeaderTitle>}
       <button
         className={styles.leftButton}
         style={{
-          bottom: `calc((var(--content-inner-left-padding) + ${viewerHeight}) / 2)`,
+          bottom: `calc((var(--content-left-padding) + ${viewerHeight}) / 2)`,
         }}
         onClick={() => scrollTo("left")}
       >
@@ -307,7 +297,7 @@ export function SideScrollWithNoFetch({
       <button
         className={styles.rightButton}
         style={{
-          bottom: `calc((var(--content-inner-left-padding) + ${viewerHeight}) / 2)`,
+          bottom: `calc((var(--content-left-padding) + ${viewerHeight}) / 2)`,
         }}
         onClick={() => scrollTo("right")}
       >
@@ -339,7 +329,7 @@ export function MovieTVSideScroll({
   fetchFunction,
 }: {
   headerTitleProps: headerTitleProps;
-  fetchFunction: (page?: number) => Promise<doubleReturn<movieT[] | TVT[]>>;
+  fetchFunction: (page?: number) => pageFetchDouble<{ data: movieT[] | TVT[] }>;
 }) {
   const [movieTVs, setMovieTVs] = useState<movieT[] | TVT[]>([]);
 
@@ -348,11 +338,10 @@ export function MovieTVSideScroll({
     const res = await fetchFunction();
 
     if (res.status) {
-      setMovieTVs(res.value);
-      return true;
-    } else {
-      return false;
+      setMovieTVs(res.value.data);
     }
+
+    return res;
   };
 
   return (
@@ -360,7 +349,7 @@ export function MovieTVSideScroll({
       headerTitleProps={headerTitleProps}
       showButtons={movieTVs.length > 0}
       fetchOperation={fetchOperation}
-      viewerHeight="calc((var(--card-width) * 3 / 2) + 167.96px)"
+      viewerHeight="var(--movieTV-card-height)"
     >
       {movieTVs.map((e) => (
         <MovieTVCard key={e.id} data={e}></MovieTVCard>
@@ -374,7 +363,7 @@ export function ActorSideScroll({
   fetchFunction,
 }: {
   headerTitleProps: headerTitleProps;
-  fetchFunction: (page?: number) => Promise<doubleReturn<actorT[]>>;
+  fetchFunction: (page?: number) => pageFetchDouble<{ data: actorT[] }>;
 }) {
   const [actors, setActors] = useState<actorT[]>([]);
 
@@ -383,11 +372,10 @@ export function ActorSideScroll({
     const res = await fetchFunction();
 
     if (res.status) {
-      setActors(res.value);
-      return true;
-    } else {
-      return false;
+      setActors(res.value.data);
     }
+
+    return res;
   };
 
   return (
@@ -395,7 +383,7 @@ export function ActorSideScroll({
       headerTitleProps={headerTitleProps}
       showButtons={actors.length > 0}
       fetchOperation={fetchOperation}
-      viewerHeight="calc(var(--card-width) + 16px + 32px + 3.2px)"
+      viewerHeight="var(--actor-card-height)"
     >
       {actors.map((e) => (
         <ActorCard key={e.id} data={e}></ActorCard>
@@ -403,6 +391,8 @@ export function ActorSideScroll({
     </SideScroll>
   );
 }
+
+const MovieTVCard_MEMO = memo(MovieTVCard);
 
 export function FromYourWatchlistSideScroll() {
   const watchlist = useWatchlist();
@@ -413,75 +403,60 @@ export function FromYourWatchlistSideScroll() {
   ) {
     return (
       <SideScrollWithNoFetch
-        headerTitleProps={{ title: "From your Wathlist", href: "/" }}
-        viewerHeight="calc((var(--card-width) * 3 / 2) + 167.96px)"
+        headerTitleProps={{ title: "From your Watchlist", href: "/" }}
+        viewerHeight="var(--movieTV-card-height)"
       >
         {[
           ...watchlist.data.movies.slice(0, 10),
           ...watchlist.data.tvs.slice(0, 10),
         ].map((e) => (
-          <MovieTVCard key={e.id} data={e}></MovieTVCard>
+          <MovieTVCard_MEMO key={e.id} data={e}></MovieTVCard_MEMO>
         ))}
       </SideScrollWithNoFetch>
     );
   } else
     return (
       <div className={styles.main}>
-        <HeaderTitle title="From your Wathlist" href="/"></HeaderTitle>
-        {watchlist.data.status === "loading" ? (
-          <div
-            className={styles.viewer}
-            style={{ height: "calc((var(--card-width) * 3 / 2) + 167.96px)" }}
-          >
-            <div className={styles.loader}>
-              <div className={styles.progress} />
-            </div>
-          </div>
-        ) : watchlist.data.status === "guest" ? (
-          <div
-            className={[styles.viewer, styles.guest].join(" ")}
-            style={{ height: "calc((var(--card-width) * 3 / 2) + 167.96px)" }}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="48"
-              height="48"
-              viewBox="0 0 24 24"
-              style={{ fill: "rgba(40, 40, 40, 50)" }}
-            >
-              <path d="M12 11.222 14.667 13l-.89-3.111L16 8l-2.667-.333L12 5l-1.333 2.667L8 8l2.223 1.889L9.333 13z"></path>
-              <path d="M19 21.723V4a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v17.723l7-4.571 7 4.571zM8 8l2.667-.333L12 5l1.333 2.667L16 8l-2.223 1.889.89 3.111L12 11.222 9.333 13l.89-3.111L8 8z"></path>
-            </svg>
-            <h4>Sign in to access your Watchlist</h4>
-            <p>
-              Save shows and movies to keep track of what you want to watch.
-            </p>
-            <button className={styles.signInButton}>Sign in to IMDb</button>
-          </div>
-        ) : (
-          <div
-            className={[styles.viewer, styles.guest].join(" ")}
-            style={{ height: "calc((var(--card-width) * 3 / 2) + 167.96px)" }}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="48"
-              height="48"
-              viewBox="0 0 24 24"
-              style={{ fill: "rgba(40, 40, 40, 50)" }}
-            >
-              <path d="M12 11.222 14.667 13l-.89-3.111L16 8l-2.667-.333L12 5l-1.333 2.667L8 8l2.223 1.889L9.333 13z"></path>
-              <path d="M19 21.723V4a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v17.723l7-4.571 7 4.571zM8 8l2.667-.333L12 5l1.333 2.667L16 8l-2.223 1.889.89 3.111L12 11.222 9.333 13l.89-3.111L8 8z"></path>
-            </svg>
-            <h4>No available releases</h4>
-            <p>
-              Add more shows and movies to keep track of what you want to watch.
-            </p>
-            <button className={styles.signInButton}>
-              Browse popular movies
-            </button>
-          </div>
-        )}
+        <HeaderTitle title="From your Watchlist" href="/"></HeaderTitle>
+        <div
+          className={[styles.viewer, styles.center].join(" ")}
+          style={{ height: "var(--movieTV-card-height)" }}
+        >
+          <WatchlistInformation
+            color="white"
+            status={watchlist.data.status}
+            height="100%"
+          ></WatchlistInformation>
+        </div>
       </div>
     );
+}
+
+export function RecentlyViewedSideScroll() {
+  const recentlyViewed = useRecentlyViewed();
+
+  if (
+    recentlyViewed.data.status === "loaded" &&
+    recentlyViewed.data.movieTvs.length + recentlyViewed.data.movieTvs.length >
+      0
+  ) {
+    return (
+      <div className={styles.recentlyViewed}>
+        <div className={styles.recentlyTop}>
+          <h2>Recently viewed</h2>
+          <button
+            className={styles.clear}
+            onClick={recentlyViewed.clearRecentlyViewed}
+          >
+            Clear all
+          </button>
+        </div>
+        <SideScrollWithNoFetch viewerHeight="var(--movieTV-card-height)">
+          {recentlyViewed.data.movieTvs.map((e) => (
+            <MovieTVCard_MEMO key={e.id} data={e}></MovieTVCard_MEMO>
+          ))}
+        </SideScrollWithNoFetch>
+      </div>
+    );
+  } else return <></>;
 }

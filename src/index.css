@@ -1,26 +1,53 @@
 :root {
+  --primary-color: #f5c518;
   --secondary-color: #f5c518;
   --blue-color: #5799ef;
   --gray-color: #ffffffb3;
   --card-color: #1a1a1a;
-  --paper-color: #121212;
+  --black-shade-color: #121212;
+  --white-shade-color: #fafafa;
   --font-family: "Roboto", "Helvetica", sans-serif;
 
-  --content-width: 1280px;
-  --content-left-padding: calc((100vw - (var(--content-width))) / 2);
-  --content-inner-left-padding: 0px;
+  --navbar-height: 4rem;
+  --min-content-height: calc(100vh - var(--navbar-height));
 
-  --card-per-row: 6;
+  --content-wrapper-left-padding: calc((100vw - (var(--content-width))) / 2);
+
+  /* content must be border-box */
+  --content-width: 1280px;
+  --content-left-padding: 0px;
+
   --gap-between-cards: 15px;
+
+  /* container is scrollable parent div with buttons */
+  --card-per-row: 6;
   --card-width: calc(
     (100cqw - ((var(--card-per-row) - 1) * var(--gap-between-cards))) /
       var(--card-per-row)
+  );
+
+  --alternative-card-per-row: 6;
+  --alternative-card-width: calc(
+    (
+        100cqw -
+          ((var(--alternative-card-per-row) - 1) * var(--gap-between-cards))
+      ) / var(--alternative-card-per-row)
   );
 
   --videos-per-row: 4;
   --video-width: calc(
     (100cqw - ((var(--videos-per-row) - 1) * var(--gap-between-cards))) /
       var(--videos-per-row)
+  );
+
+  --movieTV-card-height: calc(
+    ((var(--card-width) - 2px) * 3 / 2) + 168px + 2px
+  );
+  --actor-card-height: calc(((var(--card-width)) * 1) + 2.2rem);
+  --video-card-height: calc(var(--video-width) * 9 / 16 + 1.5rem);
+  --photo-card-height: (var(--card-width));
+  --alternative-card-height: calc(
+    ((var(--alternative-card-width) - 2px) * 3 / 2) + 168px + 2px
   );
 }
 
@@ -40,6 +67,19 @@ button {
   cursor: pointer;
   background: none;
   overflow: visible;
+}
+
+.defaultMain {
+  width: 100%;
+  padding-left: var(--content-wrapper-left-padding);
+  min-height: var(--min-content-height);
+  box-sizing: border-box;
+}
+
+.defaultContent {
+  width: var(--content-width);
+  /* padding: 15px var(--content-left-padding); */
+  box-sizing: border-box;
 }
 
 /* 
@@ -64,17 +104,19 @@ imbd content widths
 @media screen and (max-width: 1060px) {
   :root {
     --content-width: calc(100%);
-    --content-left-padding: 0px;
-    --content-inner-left-padding: 16px;
+    --content-wrapper-left-padding: 0px;
+    --content-left-padding: 16px;
 
     --card-per-row: 4.3;
     --videos-per-row: 2;
+    --alternative-card-per-row: 4;
   }
 }
 @media screen and (max-width: 650px) {
   :root {
     --card-per-row: 2.3;
     --videos-per-row: 1;
+    --alternative-card-per-row: 2;
   }
   h1 {
     font-size: 1.5rem;

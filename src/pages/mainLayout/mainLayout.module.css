@@ -1,9 +1,0 @@
-.layout {
-  width: 100%;
-  padding-left: var(--content-left-padding);
-  box-sizing: border-box;
-}
-
-.main {
-  width: var(--content-width);
-}

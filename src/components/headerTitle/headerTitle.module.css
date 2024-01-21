@@ -17,11 +17,11 @@
   color: black;
 }
 
-.icon {
+.main:hover svg {
   transition: all 100ms;
 }
 
-.main:hover > .icon {
+.main:hover svg {
   fill: var(--secondary-color);
 }
 

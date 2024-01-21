@@ -3,19 +3,19 @@ import { actorT } from "./actor";
 type TVT = {
   type: "tv";
   id: number;
-  genreIds: number[];
+  genres: string[];
   title: string;
   backdropPath: string;
   posterPath: string;
   voteAverage: number;
+  releaseDate: string;
+  overview: string;
+  popularity: number;
 };
 
 type TVDetailT = TVT & {
-  overview: string;
-  popularity: number;
   productionCompanies: string[];
   productionCountries: string[];
-  releaseDate: string;
   voteCount: number;
   images: string[];
   videos: { name: string; key: string; id: string }[];

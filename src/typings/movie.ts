@@ -3,21 +3,21 @@ import { actorT } from "./actor";
 type movieT = {
   type: "movie";
   id: number;
-  genreIds: number[];
+  genres: string[];
   title: string;
   originalTitle: string;
   backdropPath: string;
   posterPath: string;
   voteAverage: number;
+  releaseDate: string;
+  overview: string;
+  popularity: number;
 };
 
 type movieDetailT = movieT & {
   budget: number;
-  overview: string;
-  popularity: number;
   productionCompanies: string[];
   productionCountries: string[];
-  releaseDate: string;
   revenue: number;
   runtime: number;
   voteCount: number;

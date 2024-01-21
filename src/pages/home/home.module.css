@@ -1,9 +1,15 @@
-.home {
+.main {
+  padding: 25px 0;
+  padding-left: var(--content-wrapper-left-padding);
+
+  width: 100%;
+  min-height: var(--min-content-height);
+  box-sizing: border-box;
+}
+
+.content {
+  width: var(--content-width);
   display: flex;
   flex-direction: column;
-  gap: 25px;
-  padding: 25px 0;
-  box-sizing: border-box;
-  width: var(--content-width);
-  margin-left: var(--content-left-padding);
+  gap: 30px;
 }

@@ -1,0 +1,65 @@
+.main {
+  background-color: #d8d8d3;
+  width: 100%;
+  padding-left: var(--content-wrapper-left-padding);
+  min-height: var(--min-content-height);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+
+.content {
+  width: var(--content-width);
+  padding: 0 var(--content-left-padding);
+}
+
+.innerContent {
+  min-height: 500px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  padding: 1rem;
+}
+
+.signin {
+  flex: 1;
+  padding: 15px;
+  text-align: center;
+  box-sizing: border-box;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.signinButton {
+  width: 15rem;
+  height: 3rem;
+  background-color: var(--primary-color);
+  font-weight: 500;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.features {
+  flex: 1;
+}
+
+.features h3 {
+  margin-bottom: 0;
+}
+
+.features p {
+  margin-top: 0;
+}
+
+@media screen and (max-width: 650px) {
+  .innerContent {
+    flex-direction: column;
+  }
+}

@@ -50,8 +50,6 @@ function FavoritesProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  console.log("favorites", favorites);
-
   return (
     <>
       <SetFavoritesContext.Provider value={setFavorites}>
@@ -76,7 +74,7 @@ function useFavorites() {
     if (auth.user.status === "loading") return false;
 
     if (auth.user.status === "guest") {
-      navigate("/auth/signin");
+      navigate("/signin");
       return;
     }
 
@@ -111,7 +109,7 @@ function useFavorites() {
     if (auth.user.status === "loading") return false;
 
     if (auth.user.status === "guest") {
-      navigate("/auth/signin");
+      navigate("/signin");
     }
 
     if (auth.user.status === "user" && favorites.status === "user") {

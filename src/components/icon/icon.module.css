@@ -1,0 +1,10 @@
+.icon {
+  height: 100%;
+  aspect-ratio: 1;
+}
+
+.icon svg {
+  vertical-align: bottom;
+  height: 100%;
+  aspect-ratio: 1;
+}

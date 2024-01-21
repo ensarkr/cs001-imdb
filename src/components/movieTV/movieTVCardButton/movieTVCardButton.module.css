@@ -1,0 +1,42 @@
+.main {
+  overflow: hidden;
+  background-color: var(--card-color);
+  width: var(--card-width);
+  height: var(--movieTV-card-height);
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.alternativeWidth {
+  width: var(--alternative-card-width);
+  height: var(--alternative-card-height);
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+    0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+
+.border {
+  gap: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgb(0, 0, 0, 0);
+}
+
+.whiteBackground {
+  background-color: white;
+  padding: 0;
+  border: 1px solid gray;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.main:hover {
+  background-color: #ffffff14;
+}
+
+.whiteBackground:hover {
+  background-color: #00000031;
+}

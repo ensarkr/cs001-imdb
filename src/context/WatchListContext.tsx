@@ -27,7 +27,7 @@ const SetWatchlistContext = createContext<React.Dispatch<
 > | null>(null);
 
 function WatchlistProvider({ children }: { children: ReactNode }) {
-  const [watchlist, SetWatchlist] = useState<wathlistT>({
+  const [watchlist, setWatchlist] = useState<wathlistT>({
     status: "loading",
   });
 
@@ -39,7 +39,7 @@ function WatchlistProvider({ children }: { children: ReactNode }) {
     }
 
     if (auth.user.status === "guest") {
-      SetWatchlist({ status: "guest" });
+      setWatchlist({ status: "guest" });
     }
   }, [auth.user.status]);
 
@@ -47,15 +47,13 @@ function WatchlistProvider({ children }: { children: ReactNode }) {
     const res = await requestAllWatchlist(accountID, sessionID);
 
     if (res.status) {
-      SetWatchlist({ status: "user", ...res.value });
+      setWatchlist({ status: "user", ...res.value });
     }
   };
 
-  console.log("watchlist", watchlist);
-
   return (
     <>
-      <SetWatchlistContext.Provider value={SetWatchlist}>
+      <SetWatchlistContext.Provider value={setWatchlist}>
         <WatchlistContext.Provider value={watchlist}>
           {children}
         </WatchlistContext.Provider>
@@ -77,7 +75,7 @@ function useWatchlist() {
     if (auth.user.status === "loading") return false;
 
     if (auth.user.status === "guest") {
-      navigate("/auth/signin");
+      navigate("/signin");
       return;
     }
 
@@ -112,7 +110,7 @@ function useWatchlist() {
     if (auth.user.status === "loading") return false;
 
     if (auth.user.status === "guest") {
-      navigate("/auth/signin");
+      navigate("/signin");
     }
 
     if (auth.user.status === "user" && watchlist.status === "user") {

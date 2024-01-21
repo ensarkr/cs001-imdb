@@ -12,19 +12,20 @@ export default function ActorCard({
   character?: string;
 }) {
   return (
-    <Link className={styles.main} to={"/"}>
+    <Link to={`/${data.id}/credits`} className={styles.main}>
       <img
         className={styles.image}
         src={`https://image.tmdb.org/t/p/w500/${data.avatarPath}`}
       ></img>
-      <p className={styles.name} style={{ color: color }}>
-        {data.name}
-      </p>
-      {character !== undefined ? (
-        <p className={styles.character}>{character}</p>
-      ) : (
-        <></>
-      )}
+      <div className={styles.titles}>
+        <p className={styles.name} style={{ color: color }}>
+          {data.name}
+        </p>
+
+        <p className={styles.character}>
+          {character !== undefined ? character : ""}
+        </p>
+      </div>
     </Link>
   );
 }

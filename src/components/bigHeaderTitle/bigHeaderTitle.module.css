@@ -7,7 +7,7 @@
   box-sizing: border-box;
   margin-bottom: 0.5rem;
   height: 2rem;
-  padding: 0 var(--content-inner-left-padding);
+  padding: 0 var(--content-left-padding);
 }
 
 .title {
@@ -30,8 +30,4 @@
 
 .link:hover {
   background-color: rgba(36, 86, 180, 0.219);
-}
-
-.link > svg {
-  fill: var(--blue-color);
 }

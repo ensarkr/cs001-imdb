@@ -4,6 +4,7 @@ import {
   requestDeleteSessionID,
   requestUserDetailsViaSessionID,
 } from "../functions/requests";
+import { useRecentlyViewed } from "./RecentlyViewedContext";
 
 type authT =
   | { status: "loading" }
@@ -50,6 +51,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
 function useAuth() {
   const auth = useContext(AuthContext);
   const setAuth = useContext(SetAuthContext);
+  const recentlyViewed = useRecentlyViewed();
 
   if (setAuth === null) {
     throw "setAuth is unaccessible";
@@ -62,6 +64,8 @@ function useAuth() {
 
   const signOut = () => {
     const sessionID = localStorage.getItem("tmdb_session_id");
+    recentlyViewed.clearRecentlyViewed();
+
     if (sessionID !== null) {
       requestDeleteSessionID(sessionID);
       localStorage.removeItem("tmdb_session_id");

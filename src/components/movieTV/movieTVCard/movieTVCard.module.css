@@ -3,20 +3,32 @@
   background-color: var(--card-color);
   width: var(--card-width);
   text-decoration: none;
-  position: relative;
+  border-radius: 5px;
+}
+
+.alternativeWidth {
+  width: var(--alternative-card-width);
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+    0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+
+.border {
   gap: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   box-sizing: border-box;
-  padding: 1px;
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgb(0, 0, 0, 0);
 }
 
 .whiteBackground {
   background-color: white;
   padding: 0;
   border: 1px solid gray;
-  border-radius: 5px;
+  border-radius: 3px;
+  overflow: hidden;
 }
 
 .whiteBackground .title,
@@ -61,10 +73,7 @@
   gap: 0.5rem;
   justify-content: flex-start;
   align-items: center;
-}
-
-.vote > svg {
-  padding-bottom: 0.2rem;
+  height: 1.5rem;
 }
 
 .vote > span {
@@ -113,11 +122,6 @@
   padding-right: 7px;
 }
 
-.watchList > svg {
-  fill: var(--blue-color);
-  width: 1.5rem;
-}
-
 .trailer {
   height: 2rem;
   font-size: 0.8rem;
@@ -135,59 +139,4 @@
 
 .trailer:hover {
   background-color: #ffffff14;
-}
-
-.trailer > svg {
-  fill: white;
-  width: 1.5rem;
-}
-
-.favorite {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  aspect-ratio: 1;
-}
-
-.favorite svg {
-  width: 1.4rem;
-  aspect-ratio: 1;
-  padding-top: 5px;
-  box-sizing: border-box;
-}
-
-.loader {
-  width: 1rem;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  border: 2px solid #0000;
-  border-right-color: #ffa50097;
-  position: relative;
-  animation: l24 1s infinite linear;
-}
-
-.blueLoader {
-  border-right-color: var(--blue-color);
-  width: 1rem;
-}
-
-.loader:before,
-.loader:after {
-  content: "";
-  position: absolute;
-  inset: -2px;
-  border-radius: 50%;
-  border: inherit;
-  animation: inherit;
-  animation-duration: 2s;
-}
-
-.loader :after {
-  animation-duration: 4s;
-}
-
-@keyframes l24 {
-  100% {
-    transform: rotate(1turn);
-  }
 }

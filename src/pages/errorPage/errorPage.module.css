@@ -1,0 +1,25 @@
+.main {
+  width: 100%;
+  padding-left: var(--content-wrapper-left-padding);
+  box-sizing: border-box;
+  background-color: #d4d9dd;
+}
+
+.content {
+  padding: 30px;
+  width: var(--content-width);
+  height: 100%;
+  /* padding: 15px var(--content-left-padding); */
+  box-sizing: border-box;
+  background-color: white;
+  min-height: 100vh;
+  color: gray;
+}
+
+.error {
+  font-size: 4rem;
+  margin: 2rem 0 0 0;
+  padding: 0 0 0 30px;
+  box-sizing: border-box;
+  width: 100%;
+}

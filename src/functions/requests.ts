@@ -1,12 +1,15 @@
 import { actorT } from "../typings/actor";
 import {
+  convertDBtoNormalActor,
   convertDBtoNormalActors,
   convertDBtoNormalMovieDetail,
   convertDBtoNormalMovies,
+  convertDBtoNormalMoviesWithCharacter,
   convertDBtoNormalTVDetail,
   convertDBtoNormalTVs,
-} from "../typings/conversion";
-import { doubleReturn } from "../typings/global";
+  convertDBtoNormalTVsWithCharacter,
+} from "./conversion";
+import { doubleReturn, pageFetchDouble } from "../typings/global";
 import { movieDetailT, movieT } from "../typings/movie";
 import { TVDetailT, TVT } from "../typings/tv";
 import { userT } from "../typings/user";
@@ -127,7 +130,7 @@ async function requestDeleteSessionID(
 
 async function requestPopularMovies(
   page?: number
-): Promise<doubleReturn<movieT[]>> {
+): pageFetchDouble<{ data: movieT[] }> {
   try {
     const url = `https://api.themoviedb.org/3/movie/popular?page=${
       page === undefined ? 1 : page
@@ -146,10 +149,13 @@ async function requestPopularMovies(
     if (data.success !== false) {
       return {
         status: true,
-        value: convertDBtoNormalMovies(data.results),
+        value: {
+          data: convertDBtoNormalMovies(data.results),
+          maxPage: data.total_pages,
+        },
       };
     } else {
-      return { status: false, message: "Session denied." };
+      return { status: false, message: "Fetch error." };
     }
   } catch (error) {
     return { status: false, message: "Fetch error." };
@@ -158,7 +164,7 @@ async function requestPopularMovies(
 
 async function requestTopRatedMovies(
   page?: number
-): Promise<doubleReturn<movieT[]>> {
+): pageFetchDouble<{ data: movieT[] }> {
   try {
     const url = `https://api.themoviedb.org/3/movie/top_rated?page=${
       page === undefined ? 1 : page
@@ -177,17 +183,22 @@ async function requestTopRatedMovies(
     if (data.success !== false) {
       return {
         status: true,
-        value: convertDBtoNormalMovies(data.results),
+        value: {
+          data: convertDBtoNormalMovies(data.results),
+          maxPage: data.total_pages,
+        },
       };
     } else {
-      return { status: false, message: "Session denied." };
+      return { status: false, message: "Fetch error." };
     }
   } catch (error) {
     return { status: false, message: "Fetch error." };
   }
 }
 
-async function requestAiringTVs(page?: number): Promise<doubleReturn<TVT[]>> {
+async function requestAiringTVs(
+  page?: number
+): pageFetchDouble<{ data: TVT[] }> {
   try {
     const url = `https://api.themoviedb.org/3/tv/on_the_air?page=${
       page === undefined ? 1 : page
@@ -206,10 +217,13 @@ async function requestAiringTVs(page?: number): Promise<doubleReturn<TVT[]>> {
     if (data.success !== false) {
       return {
         status: true,
-        value: convertDBtoNormalTVs(data.results),
+        value: {
+          data: convertDBtoNormalTVs(data.results),
+          maxPage: data.total_pages,
+        },
       };
     } else {
-      return { status: false, message: "Session denied." };
+      return { status: false, message: "Fetch error." };
     }
   } catch (error) {
     return { status: false, message: "Fetch error." };
@@ -218,7 +232,7 @@ async function requestAiringTVs(page?: number): Promise<doubleReturn<TVT[]>> {
 
 async function requestNowPlayingMovies(
   page?: number
-): Promise<doubleReturn<movieT[]>> {
+): pageFetchDouble<{ data: movieT[] }> {
   try {
     const url = `https://api.themoviedb.org/3/movie/now_playing?page=${
       page === undefined ? 1 : page
@@ -237,10 +251,13 @@ async function requestNowPlayingMovies(
     if (data.success !== false) {
       return {
         status: true,
-        value: convertDBtoNormalMovies(data.results),
+        value: {
+          data: convertDBtoNormalMovies(data.results),
+          maxPage: data.total_pages,
+        },
       };
     } else {
-      return { status: false, message: "Session denied." };
+      return { status: false, message: "Fetch error." };
     }
   } catch (error) {
     return { status: false, message: "Fetch error." };
@@ -249,7 +266,7 @@ async function requestNowPlayingMovies(
 
 async function requestUpcomingMovies(
   page?: number
-): Promise<doubleReturn<movieT[]>> {
+): pageFetchDouble<{ data: movieT[] }> {
   try {
     const url = `https://api.themoviedb.org/3/movie/upcoming?page=${
       page === undefined ? 1 : page
@@ -268,10 +285,13 @@ async function requestUpcomingMovies(
     if (data.success !== false) {
       return {
         status: true,
-        value: convertDBtoNormalMovies(data.results),
+        value: {
+          data: convertDBtoNormalMovies(data.results),
+          maxPage: data.total_pages,
+        },
       };
     } else {
-      return { status: false, message: "Session denied." };
+      return { status: false, message: "Fetch error." };
     }
   } catch (error) {
     return { status: false, message: "Fetch error." };
@@ -280,7 +300,7 @@ async function requestUpcomingMovies(
 
 async function requestPopularActors(
   page?: number
-): Promise<doubleReturn<actorT[]>> {
+): pageFetchDouble<{ data: actorT[] }> {
   try {
     const url = `https://api.themoviedb.org/3/person/popular?page=${
       page === undefined ? 1 : page
@@ -299,10 +319,13 @@ async function requestPopularActors(
     if (data.success !== false) {
       return {
         status: true,
-        value: convertDBtoNormalActors(data.results),
+        value: {
+          data: convertDBtoNormalActors(data.results),
+          maxPage: data.total_pages,
+        },
       };
     } else {
-      return { status: false, message: "Session denied." };
+      return { status: false, message: "Fetch error." };
     }
   } catch (error) {
     return { status: false, message: "Fetch error." };
@@ -343,7 +366,7 @@ async function requestAllFavorites(
         pageLimit = data.total_pages;
         result.tvs.push(...convertDBtoNormalTVs(data.results));
       } else {
-        return { status: false, message: "Session denied." };
+        return { status: false, message: "Fetch error." };
       }
     } while (currentPage <= pageLimit);
 
@@ -367,7 +390,7 @@ async function requestAllFavorites(
         pageLimit = data.total_pages;
         result.movies.push(...convertDBtoNormalMovies(data.results));
       } else {
-        return { status: false, message: "Session denied." };
+        return { status: false, message: "Fetch error." };
       }
     } while (currentPage <= pageLimit);
 
@@ -408,7 +431,7 @@ async function requestToFavorites(
         status: true,
       };
     } else {
-      return { status: false, message: "Session denied." };
+      return { status: false, message: "Fetch error." };
     }
   } catch (error) {
     return { status: false, message: "Fetch error." };
@@ -449,7 +472,7 @@ async function requestAllWatchlist(
         pageLimit = data.total_pages;
         result.tvs.push(...convertDBtoNormalTVs(data.results));
       } else {
-        return { status: false, message: "Session denied." };
+        return { status: false, message: "Fetch error." };
       }
     } while (currentPage <= pageLimit);
 
@@ -473,7 +496,7 @@ async function requestAllWatchlist(
         pageLimit = data.total_pages;
         result.movies.push(...convertDBtoNormalMovies(data.results));
       } else {
-        return { status: false, message: "Session denied." };
+        return { status: false, message: "Fetch error." };
       }
     } while (currentPage <= pageLimit);
 
@@ -514,7 +537,7 @@ async function requestToWatchlist(
         status: true,
       };
     } else {
-      return { status: false, message: "Session denied." };
+      return { status: false, message: "Fetch error." };
     }
   } catch (error) {
     return { status: false, message: "Fetch error." };
@@ -543,7 +566,7 @@ async function requestMovieDetails(
         value: convertDBtoNormalMovieDetail(data),
       };
     } else {
-      return { status: false, message: "Session denied." };
+      return { status: false, message: "Fetch error." };
     }
   } catch (error) {
     console.log(error);
@@ -572,7 +595,205 @@ async function requestTVDetails(id: number): Promise<doubleReturn<TVDetailT>> {
         value: convertDBtoNormalTVDetail(data),
       };
     } else {
-      return { status: false, message: "Session denied." };
+      return { status: false, message: "Fetch error." };
+    }
+  } catch (error) {
+    console.log(error);
+
+    return { status: false, message: "Fetch error." };
+  }
+}
+
+async function requestMovieQuery(
+  page: number,
+  query: string
+): pageFetchDouble<{ data: movieT[] }> {
+  try {
+    const url = `https://api.themoviedb.org/3/search/movie?query=${query}&include_adult=false&language=en-US&page=${page}`;
+    const options = {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: import.meta.env.VITE_TMDB_API_KEY as string,
+      },
+    };
+
+    const res = await fetch(url, options);
+    const data = await res.json();
+
+    if (data.success !== false) {
+      return {
+        status: true,
+        value: {
+          data: convertDBtoNormalMovies(data.results),
+          maxPage: data.total_pages,
+        },
+      };
+    } else {
+      return { status: false, message: "Fetch error." };
+    }
+  } catch (error) {
+    console.log(error);
+
+    return { status: false, message: "Fetch error." };
+  }
+}
+
+async function requestTVQuery(
+  page: number,
+  query: string
+): pageFetchDouble<{ data: TVT[] }> {
+  try {
+    const url = `https://api.themoviedb.org/3/search/tv?query=${query}&include_adult=false&language=en-US&page=${page}`;
+    const options = {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: import.meta.env.VITE_TMDB_API_KEY as string,
+      },
+    };
+
+    const res = await fetch(url, options);
+    const data = await res.json();
+
+    if (data.success !== false) {
+      return {
+        status: true,
+        value: {
+          data: convertDBtoNormalTVs(data.results),
+          maxPage: data.total_pages,
+        },
+      };
+    } else {
+      return { status: false, message: "Fetch error." };
+    }
+  } catch (error) {
+    console.log(error);
+
+    return { status: false, message: "Fetch error." };
+  }
+}
+
+async function requestActorQuery(
+  page: number,
+  query: string
+): pageFetchDouble<{ data: actorT[] }> {
+  try {
+    const url = `https://api.themoviedb.org/3/search/person?query=${query}&include_adult=false&language=en-US&page=${page}`;
+    const options = {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: import.meta.env.VITE_TMDB_API_KEY as string,
+      },
+    };
+
+    const res = await fetch(url, options);
+    const data = await res.json();
+
+    if (data.success !== false) {
+      return {
+        status: true,
+        value: {
+          data: convertDBtoNormalActors(data.results),
+          maxPage: data.total_pages,
+        },
+      };
+    } else {
+      return { status: false, message: "Fetch error." };
+    }
+  } catch (error) {
+    console.log(error);
+
+    return { status: false, message: "Fetch error." };
+  }
+}
+
+async function requestActor(actorId: number): Promise<doubleReturn<actorT>> {
+  try {
+    const url = `https://api.themoviedb.org/3/person/${actorId}&language=en-US`;
+    const options = {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: import.meta.env.VITE_TMDB_API_KEY as string,
+      },
+    };
+
+    const res = await fetch(url, options);
+    const data = await res.json();
+
+    if (data.success !== false) {
+      return {
+        status: true,
+        value: convertDBtoNormalActor(data),
+      };
+    } else {
+      return { status: false, message: "Fetch error." };
+    }
+  } catch (error) {
+    console.log(error);
+
+    return { status: false, message: "Fetch error." };
+  }
+}
+
+async function requestActorMovies(
+  actorId: number
+): Promise<doubleReturn<(movieT & { character: string })[]>> {
+  try {
+    const url = `https://api.themoviedb.org/3/person/${actorId}/movie_credits?language=en-US`;
+    const options = {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: import.meta.env.VITE_TMDB_API_KEY as string,
+      },
+    };
+
+    const res = await fetch(url, options);
+    const data = await res.json();
+
+    if (data.success !== false) {
+      return {
+        status: true,
+        value: convertDBtoNormalMoviesWithCharacter(
+          data.cast.concat(data.crew)
+        ),
+      };
+    } else {
+      return { status: false, message: "Fetch error." };
+    }
+  } catch (error) {
+    console.log(error);
+
+    return { status: false, message: "Fetch error." };
+  }
+}
+
+async function requestActorTVs(
+  actorId: number
+): Promise<doubleReturn<(TVT & { character: string })[]>> {
+  try {
+    const url = `https://api.themoviedb.org/3/person/${actorId}/tv_credits?language=en-US`;
+    const options = {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: import.meta.env.VITE_TMDB_API_KEY as string,
+      },
+    };
+
+    const res = await fetch(url, options);
+    const data = await res.json();
+
+    if (data.success !== false) {
+      return {
+        status: true,
+        value: convertDBtoNormalTVsWithCharacter(data.cast.concat(data.crew)),
+      };
+    } else {
+      return { status: false, message: "Fetch error." };
     }
   } catch (error) {
     console.log(error);
@@ -598,4 +819,10 @@ export {
   requestToWatchlist,
   requestMovieDetails,
   requestTVDetails,
+  requestMovieQuery,
+  requestTVQuery,
+  requestActorQuery,
+  requestActor,
+  requestActorMovies,
+  requestActorTVs,
 };

@@ -1,0 +1,27 @@
+.main {
+  background-color: white;
+  padding-left: var(--content-wrapper-left-padding);
+  min-height: var(--min-content-height);
+  box-sizing: border-box;
+}
+
+.content {
+  width: var(--content-width);
+  box-sizing: border-box;
+  display: flex;
+  gap: 25px;
+  flex-direction: column;
+  padding-bottom: 25px;
+}
+
+.content h1 {
+  padding-left: var(--content-left-padding);
+}
+
+@media screen and (max-width: 1060px) {
+  .content {
+  }
+  .content h1 {
+    background-color: var(--white-shade-color);
+  }
+}
