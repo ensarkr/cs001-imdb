@@ -18,15 +18,15 @@ This case-study is IMDb clone with limited functionality. It uses TMDB api for b
 
 ## Routes
 
-- [Home](http://localhost:5173/) - See parts of viewable content.
-- [Sign In](http://localhost:5173/signIn) - Sign in via TMDB.
-- [Watchlist](http://localhost:5173/watchlist) - See your watchlist.
-- [Favorites](http://localhost:5173/favorites) - See your favorites.
-- [Movie/TV Detail](http://localhost:5173/movie/920/detail) - See movie/tv detail.
-- [Actor Credits](http://localhost:5173/6193/credits) - See actor credits.
-- [Search Page](http://localhost:5173/search/batman) - Search Movie/TV/Actors.
-- [Top Picks](http://localhost:5173/whatToWatch/topPicks) - Popular movies.
-- [From your watchlist](http://localhost:5173/whatToWatch/fromYourWatchlist) - See your watchlist.
+- [Home](https://gitname.github.io/cs001-imdb/) - See parts of viewable content.
+- [Sign In](https://gitname.github.io/cs001-imdb/signIn) - Sign in via TMDB.
+- [Watchlist](https://gitname.github.io/cs001-imdb/watchlist) - See your watchlist.
+- [Favorites](https://gitname.github.io/cs001-imdb/favorites) - See your favorites.
+- [Movie/TV Detail](https://gitname.github.io/cs001-imdb/movie/920/detail) - See movie/tv detail.
+- [Actor Credits](https://gitname.github.io/cs001-imdb/6193/credits) - See actor credits.
+- [Search Page](https://gitname.github.io/cs001-imdb/search/batman) - Search Movie/TV/Actors.
+- [Top Picks](https://gitname.github.io/cs001-imdb/whatToWatch/topPicks) - Popular movies.
+- [From your watchlist](https://gitname.github.io/cs001-imdb/whatToWatch/fromYourWatchlist) - See your watchlist.
 - [Top IMDb](http://localhost:5173/whatToWatch/topIMDb) - Top rated movies.
 
 ## Live Demo
