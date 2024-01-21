@@ -18,20 +18,20 @@ This case-study is IMDb clone with limited functionality. It uses TMDB api for b
 
 ## Routes
 
-- [Home](https://gitname.github.io/cs001-imdb/) - See parts of viewable content.
-- [Sign In](https://gitname.github.io/cs001-imdb/signIn) - Sign in via TMDB.
-- [Watchlist](https://gitname.github.io/cs001-imdb/watchlist) - See your watchlist.
-- [Favorites](https://gitname.github.io/cs001-imdb/favorites) - See your favorites.
-- [Movie/TV Detail](https://gitname.github.io/cs001-imdb/movie/920/detail) - See movie/tv detail.
-- [Actor Credits](https://gitname.github.io/cs001-imdb/6193/credits) - See actor credits.
-- [Search Page](https://gitname.github.io/cs001-imdb/search/batman) - Search Movie/TV/Actors.
-- [Top Picks](https://gitname.github.io/cs001-imdb/whatToWatch/topPicks) - Popular movies.
-- [From your watchlist](https://gitname.github.io/cs001-imdb/whatToWatch/fromYourWatchlist) - See your watchlist.
-- [Top IMDb](http://localhost:5173/whatToWatch/topIMDb) - Top rated movies.
+- [Home](vercel) - See parts of viewable content.
+- [Sign In](vercelsignIn) - Sign in via TMDB.
+- [Watchlist](vercelwatchlist) - See your watchlist.
+- [Favorites](vercelfavorites) - See your favorites.
+- [Movie/TV Detail](vercelmovie/920/detail) - See movie/tv detail.
+- [Actor Credits](vercel6193/credits) - See actor credits.
+- [Search Page](vercelsearch/batman) - Search Movie/TV/Actors.
+- [Top Picks](vercelwhatToWatch/topPicks) - Popular movies.
+- [From your watchlist](vercelwhatToWatch/fromYourWatchlist) - See your watchlist.
+- [Top IMDb](vercelwhatToWatch/topIMDb) - Top rated movies.
 
 ## Live Demo
 
-https://ensarkr.github.io/cs001-imdb/
+vercel
 
 ## To Run Locally
 
