@@ -18,22 +18,24 @@ This case-study is IMDb clone with limited functionality. It uses TMDB api for b
 
 ## Routes
 
-- [Home](vercel) - See parts of viewable content.
-- [Sign In](vercelsignIn) - Sign in via TMDB.
-- [Watchlist](vercelwatchlist) - See your watchlist.
-- [Favorites](vercelfavorites) - See your favorites.
-- [Movie/TV Detail](vercelmovie/920/detail) - See movie/tv detail.
-- [Actor Credits](vercel6193/credits) - See actor credits.
-- [Search Page](vercelsearch/batman) - Search Movie/TV/Actors.
-- [Top Picks](vercelwhatToWatch/topPicks) - Popular movies.
-- [From your watchlist](vercelwhatToWatch/fromYourWatchlist) - See your watchlist.
-- [Top IMDb](vercelwhatToWatch/topIMDb) - Top rated movies.
+- [Home](https://cs001-imdb.vercel.app/) - See parts of viewable content.
+- [Sign In](https://cs001-imdb.vercel.app/signIn) - Sign in via TMDB.
+- [Watchlist](https://cs001-imdb.vercel.app/watchlist) - See your watchlist.
+- [Favorites](https://cs001-imdb.vercel.app/favorites) - See your favorites.
+- Movie/TV Detail - See movie/tv detail.
+- Actor Credits - See actor credits.
+- Search Page - Search Movie/TV/Actors.
+- [Top Picks](https://cs001-imdb.vercel.app/whatToWatch/topPicks) - Popular movies.
+- [From your watchlist](https://cs001-imdb.vercel.app/whatToWatch/fromYourWatchlist) - See your watchlist.
+- [Top IMDb](https://cs001-imdb.vercel.app/whatToWatch/topIMDb) - Top rated movies.
 
 ## Live Demo
 
-vercel
+https://cs001-imdb.vercel.app/
 
 ## To Run Locally
+
+Change VITE_SITE_URL to http://localhost:5173/ in .env file.
 
 ```
 $ npm install

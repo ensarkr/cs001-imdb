@@ -1,7 +1,7 @@
 {
   "name": "cs001-imdb",
   "version": "0.0.0",
-  "homepage": "https://ensarkr.github.io/cs001-imdb/",
+  "homepage": "https://cs001-imdb.vercel.app/",
   "type": "module",
   "scripts": {
     "dev": "vite",
