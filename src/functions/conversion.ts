@@ -9,8 +9,8 @@ function convertDBtoNormalMovie(movie: any): movieT {
     type: "movie",
     id: movie.id,
     genres: movie.genre_ids
-      .map((e) => getMovieGenre(e))
-      .filter((e) => e !== null),
+      .map((e: number) => getMovieGenre(e))
+      .filter((e: null) => e !== null),
     title: movie.title,
     originalTitle: movie.original_title,
     backdropPath: movie.backdrop_path,
@@ -39,7 +39,9 @@ function convertDBtoNormalTV(TV: any): TVT {
   return {
     type: "tv",
     id: TV.id,
-    genres: TV.genre_ids.map((e) => getMovieGenre(e)).filter((e) => e !== null),
+    genres: TV.genre_ids
+      .map((e: number) => getMovieGenre(e))
+      .filter((e: null) => e !== null),
     title: TV.name,
     releaseDate: TV.first_air_date,
     backdropPath: TV.backdrop_path,
@@ -83,8 +85,8 @@ function convertDBtoNormalMovieDetail(movieDetail: any): movieDetailT {
     id: movieDetail.id,
     releaseDate: movieDetail.release_date,
     genres: movieDetail.genres
-      .map((e) => getMovieGenre(e.id))
-      .filter((e) => e !== null),
+      .map((e: { id: number }) => getMovieGenre(e.id))
+      .filter((e: null) => e !== null),
     title: movieDetail.title,
     originalTitle: movieDetail.original_title,
     backdropPath: movieDetail.backdrop_path,
@@ -147,8 +149,8 @@ function convertDBtoNormalTVDetail(TVDetail: any): TVDetailT {
     type: "tv",
     id: TVDetail.id,
     genres: TVDetail.genres
-      .map((e) => getMovieGenre(e.id))
-      .filter((e) => e !== null),
+      .map((e: { id: number }) => getMovieGenre(e.id))
+      .filter((e: null) => e !== null),
     title: TVDetail.name,
     backdropPath: TVDetail.backdrop_path,
     posterPath: TVDetail.poster_path,
