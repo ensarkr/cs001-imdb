@@ -269,7 +269,7 @@ export function FromYourWatchlistSideScroll() {
   } else
     return (
       <div className={styles.main}>
-        <HeaderTitle title="From your Watchlist" href="/"></HeaderTitle>
+        <HeaderTitle title="From your Watchlist" href="/whatToWatch/fromYourWatchlist"></HeaderTitle>
         <div
           className={[styles.viewer, styles.center].join(" ")}
           style={{ height: "var(--movieTV-card-height)" }}

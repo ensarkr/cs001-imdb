@@ -71,7 +71,7 @@ function InnerMovieTVDetail({ data }: { data: movieDetailT | TVDetailT }) {
           </SideScrollWithNoFetch>
 
           <SideScrollWithNoFetch
-            headerTitleProps={{ title: "Actors", color: "black" }}
+            headerTitleProps={{ title: "Cast", color: "black" }}
             viewerHeight="var(--actor-card-height)"
           >
             {data.cast
