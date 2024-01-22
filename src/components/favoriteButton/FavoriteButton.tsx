@@ -44,7 +44,7 @@ export default function FavoriteButton({
       style={height === undefined ? {} : { height: height }}
     >
       {favorites.data.status === "loading" || isLoading ? (
-        <CircleLoader color="var(--primary-color)"></CircleLoader>
+        <CircleLoader color="var(--yellow-color)"></CircleLoader>
       ) : (
         <button onClick={handleClick} className={styles.favoriteButton}>
           {isFavorite ? (

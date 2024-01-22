@@ -38,7 +38,7 @@
 .signinButton {
   width: 15rem;
   height: 3rem;
-  background-color: var(--primary-color);
+  background-color: var(--yellow-color);
   font-weight: 500;
   border-radius: 5px;
   display: flex;

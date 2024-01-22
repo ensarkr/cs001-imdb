@@ -26,7 +26,7 @@ export default function WatchlistInformation({
   if (status === "loading") {
     return (
       <div className={className} style={style}>
-        <DotLoader color={color}></DotLoader>
+        <DotLoader color={color === "black" ? "white" : "black"}></DotLoader>
       </div>
     );
   }

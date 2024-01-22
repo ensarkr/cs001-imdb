@@ -162,7 +162,7 @@ function Watchlist() {
   if (watchlist.data.status === "loading")
     return (
       <div className={styles.watchlist}>
-        <CircleLoader color="var(--primary-color)" height="50%"></CircleLoader>
+        <CircleLoader color="var(--yellow-color)" height="50%"></CircleLoader>
       </div>
     );
 

@@ -26,8 +26,8 @@
 .whiteBackground {
   background-color: white;
   padding: 0;
-  border: 1px solid gray;
-  border-radius: 3px;
+  border: 1px solid var(--thin-border-color);
+  border-radius: 4px;
   overflow: hidden;
 }
 
@@ -115,7 +115,7 @@
 }
 
 .watchList:hover {
-  background-color: rgba(36, 86, 180, 0.219);
+  background-color: var(--blue-hover-color);
 }
 
 .watchList > span {

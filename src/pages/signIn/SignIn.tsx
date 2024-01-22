@@ -57,6 +57,7 @@ export default function SignIn() {
     auth.signOut();
     const token = await requestNewRequestToken();
 
+    setIsLoading(false);
     if (!token.status) return;
 
     window.location.href = `https://www.themoviedb.org/authenticate/${

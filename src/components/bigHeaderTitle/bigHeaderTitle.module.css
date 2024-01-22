@@ -1,5 +1,5 @@
 .main {
-  color: var(--secondary-color);
+  color: var(--yellow-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -29,5 +29,5 @@
 }
 
 .link:hover {
-  background-color: rgba(36, 86, 180, 0.219);
+  background-color: var(--blue-hover-color);
 }

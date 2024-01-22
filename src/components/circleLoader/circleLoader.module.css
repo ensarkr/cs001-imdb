@@ -5,7 +5,7 @@
   border: 3px solid #0000;
   position: relative;
   animation: l24 1s infinite linear;
-  border-right-color: #ffa50097;
+  border-right-color: var(--yellow-color);
   box-sizing: border-box;
 }
 

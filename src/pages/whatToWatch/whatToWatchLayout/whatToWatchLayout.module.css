@@ -9,14 +9,10 @@
 
 .content {
   width: var(--content-width);
-  padding: 25px var(--content-left-padding);
+  padding: 0 var(--content-left-padding);
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-}
-
-.content h1 {
-  margin-top: 0;
 }
 
 .tabs {
@@ -43,7 +39,7 @@
 }
 
 .activeTab {
-  border-bottom: 3px solid var(--primary-color);
+  border-bottom: 3px solid var(--yellow-color);
 }
 
 @media screen and (max-width: 1060px) {

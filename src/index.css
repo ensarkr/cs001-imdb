@@ -1,11 +1,13 @@
 :root {
-  --primary-color: #f5c518;
-  --secondary-color: #f5c518;
+  --yellow-color: #f5c518;
   --blue-color: #5799ef;
   --gray-color: #ffffffb3;
   --card-color: #1a1a1a;
   --black-shade-color: #121212;
   --white-shade-color: #fafafa;
+  --thin-border-color: rgb(0, 0, 0, 0.12);
+  --blue-hover-color: rgba(36, 86, 180, 0.219);
+
   --font-family: "Roboto", "Helvetica", sans-serif;
 
   --navbar-height: 4rem;

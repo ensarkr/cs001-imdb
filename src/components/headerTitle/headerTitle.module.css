@@ -22,13 +22,13 @@
 }
 
 .main:hover svg {
-  fill: var(--secondary-color);
+  fill: var(--yellow-color);
 }
 
 .rect {
   width: 4px;
   height: 100%;
-  background-color: var(--secondary-color);
+  background-color: var(--yellow-color);
   border-radius: 2px;
 }
 
