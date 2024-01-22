@@ -2,6 +2,13 @@ import styles from "./ActorWideCard.module.css";
 import { actorT } from "../../../typings/actor";
 import { Link } from "react-router-dom";
 
+/*
+Renders actor image ant its name
+If character exist it also renders character at bottom
+By clicking user can navigate to actor credits
+Main difference between this and default is this is has width at 100%
+*/
+
 export default function ActorWideCard({ data }: { data: actorT }) {
   return (
     <Link to={`/${data.id}/credits`} className={styles.main}>

@@ -17,6 +17,14 @@ type iconT =
   | "search"
   | "close";
 
+/*
+Renders icon svg inside a div
+Default height is 100%
+
+If svg is used multiple time in this project 
+Its added here
+*/
+
 export default function Icon({
   type,
   height,

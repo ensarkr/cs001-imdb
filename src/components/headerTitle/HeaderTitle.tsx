@@ -2,6 +2,11 @@ import { Link } from "react-router-dom";
 import styles from "./headerTitle.module.css";
 import Icon from "../icon/Icon";
 
+/*
+Renders title it can contain link 
+Link is added to title
+*/
+
 export type headerTitleProps = {
   title: string;
   subTitle?: string;

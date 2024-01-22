@@ -2,6 +2,11 @@ import { Link } from "react-router-dom";
 import styles from "./bigHeaderTitle.module.css";
 import Icon from "../icon/Icon";
 
+/*
+Renders title it can contain link 
+Link is added to left button
+*/
+
 export type bigHeaderTitleProps = {
   title: string;
   link?: { href: string; text: string };

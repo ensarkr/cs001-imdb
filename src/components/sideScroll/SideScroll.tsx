@@ -1,40 +1,50 @@
-import { ReactNode, memo, useEffect, useRef, useState } from "react";
+import { ReactNode, memo, useEffect, useRef } from "react";
 import styles from "./sideScroll.module.css";
 import HeaderTitle, { headerTitleProps } from "../headerTitle/HeaderTitle";
-import { doubleReturn, pageFetchDouble } from "../../typings/global";
-import { movieT } from "../../typings/movie";
-import { TVT } from "../../typings/tv";
+import { pageFetchDouble } from "../../typings/global";
 import MovieTVCard from "../movieTV/movieTVCard/MovieTVCard";
-import { actorT } from "../../typings/actor";
-import ActorCard from "../actor/actorCard/ActorCard";
 import { useWatchlist } from "../../context/WatchListContext";
 import DotLoader from "../dotLoader/dotLoader";
 import useFetchPages from "../../hooks/useFetchPages";
 import WatchlistInformation from "../watchlistInformation/WatchlistInformation";
 import { useRecentlyViewed } from "../../context/RecentlyViewedContext";
+import useSideScroll from "../../hooks/useSideScroll";
 
-export default function SideScroll({
+/*
+Renders side scroll div with buttons  
+
+Starts fetching when its in viewport
+Fetched datas rendered using renderItem prop
+
+Comes with header component
+*/
+
+export default function SideScroll<T>({
   headerTitleProps,
   fetchOperation,
-  showButtons,
   viewerHeight,
-  children,
+  renderItem,
 }: {
   headerTitleProps: headerTitleProps;
-  fetchOperation: () => Promise<doubleReturn<{ maxPage: number }>>;
-  showButtons: boolean;
+  fetchOperation: (fetchPage: number) => pageFetchDouble<{ data: T[] }>;
   viewerHeight: string;
-  children?: ReactNode;
+  renderItem: (item: T) => ReactNode;
 }) {
-  const { fetchErrorMessage, fetchNextPage, fetchStatus, didFetchStartRef } =
-    useFetchPages(fetchOperation);
+  const {
+    data,
+    fetchErrorMessage,
+    fetchNextPage,
+    fetchStatus,
+    didFetchStartRef,
+    fetchReset,
+  } = useFetchPages(fetchOperation, false);
 
-  const mainRef = useRef<HTMLDivElement>(null!);
-  const listRef = useRef<HTMLDivElement>(null!);
-  const currentStartRef = useRef<number>(0);
+  const { listRef, scrollTo, containerRef } = useSideScroll(
+    didFetchStartRef.current
+  );
 
   useEffect(() => {
-    const mainRect = mainRef.current.getBoundingClientRect();
+    const mainRect = containerRef.current.getBoundingClientRect();
 
     const scrollFunction = () => {
       if (
@@ -45,73 +55,13 @@ export default function SideScroll({
       }
     };
 
-    const resizeFunction = () => {
-      if (didFetchStartRef.current === false) return;
-
-      mainRef.current.style.scrollBehavior = "auto";
-      mainRef.current.scrollLeft =
-        listRef.current.children[
-          currentStartRef.current
-        ].getBoundingClientRect().left -
-        listRef.current.getBoundingClientRect().left;
-      mainRef.current.style.scrollBehavior = "smooth";
-    };
-
     scrollFunction();
     window.addEventListener("scroll", scrollFunction);
-    window.addEventListener("resize", resizeFunction);
 
     return () => {
       window.removeEventListener("scroll", scrollFunction);
-      window.removeEventListener("resize", resizeFunction);
     };
   }, []);
-
-  const scrollTo = async (direction: "left" | "right") => {
-    const parentRect = mainRef.current.getBoundingClientRect();
-    const rect = listRef.current.getBoundingClientRect();
-
-    if (direction === "right") {
-      for (let i = 0; i < listRef.current.children.length; i++) {
-        if (
-          parentRect.width + parentRect.left <
-          listRef.current.children[i].getBoundingClientRect().left +
-            listRef.current.children[i].getBoundingClientRect().width -
-            1
-        ) {
-          currentStartRef.current = i;
-
-          mainRef.current.scrollLeft =
-            listRef.current.children[i].getBoundingClientRect().left -
-            rect.left;
-
-          return;
-        }
-      }
-    }
-
-    if (direction === "left") {
-      for (let i = listRef.current.children.length - 1; i >= 0; i--) {
-        if (
-          listRef.current.children[i].getBoundingClientRect().left <
-          parentRect.left -
-            parentRect.width +
-            listRef.current.children[i].getBoundingClientRect().width
-        ) {
-          currentStartRef.current = i;
-          mainRef.current.scrollLeft =
-            listRef.current.children[i].getBoundingClientRect().left -
-            rect.left;
-          return;
-        }
-      }
-
-      currentStartRef.current = 0;
-      mainRef.current.scrollLeft =
-        listRef.current.children[0].getBoundingClientRect().left - rect.left;
-      return;
-    }
-  };
 
   return (
     <div
@@ -121,7 +71,7 @@ export default function SideScroll({
       ].join(" ")}
     >
       <HeaderTitle {...headerTitleProps}></HeaderTitle>
-      {showButtons && (
+      {data.length > 0 && (
         <>
           <button
             className={styles.leftButton}
@@ -160,21 +110,21 @@ export default function SideScroll({
         </>
       )}
       <div
-        ref={mainRef}
+        ref={containerRef}
         className={styles.viewer}
         style={{ height: viewerHeight }}
       >
         {fetchStatus === "loading" ? (
           <DotLoader color={headerTitleProps.color}></DotLoader>
         ) : fetchStatus === "error" ? (
-          <div onClick={fetchOperation} className={styles.center}>
+          <div onClick={fetchReset} className={styles.center}>
             <p>{fetchErrorMessage}</p>
             <button className={styles.retry}>click to retry</button>
           </div>
         ) : (
           <>
             <div className={styles.list} ref={listRef}>
-              {children}
+              {data.map(renderItem)}
             </div>
           </>
         )}
@@ -182,6 +132,14 @@ export default function SideScroll({
     </div>
   );
 }
+
+/*
+Renders side scroll div with buttons 
+
+There is no fetching 
+
+Comes with header component
+*/
 
 export function SideScrollWithNoFetch({
   headerTitleProps,
@@ -192,8 +150,8 @@ export function SideScrollWithNoFetch({
   viewerHeight: string;
   children?: ReactNode;
 }) {
-  const mainRef = useRef<HTMLDivElement>(null!);
-  const listRef = useRef<HTMLDivElement>(null!);
+  const { listRef, scrollTo, containerRef } = useSideScroll(true);
+
   const currentStartRef = useRef<number>(0);
   const noItem =
     (Array.isArray(children) && children.length === 0) ||
@@ -203,13 +161,13 @@ export function SideScrollWithNoFetch({
     if (noItem) return;
 
     const resizeFunction = () => {
-      mainRef.current.style.scrollBehavior = "auto";
-      mainRef.current.scrollLeft =
+      containerRef.current.style.scrollBehavior = "auto";
+      containerRef.current.scrollLeft =
         listRef.current.children[
           currentStartRef.current
         ].getBoundingClientRect().left -
         listRef.current.getBoundingClientRect().left;
-      mainRef.current.style.scrollBehavior = "smooth";
+      containerRef.current.style.scrollBehavior = "smooth";
     };
 
     window.addEventListener("resize", resizeFunction);
@@ -218,52 +176,6 @@ export function SideScrollWithNoFetch({
       window.removeEventListener("resize", resizeFunction);
     };
   }, []);
-
-  const scrollTo = async (direction: "left" | "right") => {
-    const parentRect = mainRef.current.getBoundingClientRect();
-    const rect = listRef.current.getBoundingClientRect();
-
-    if (direction === "right") {
-      for (let i = 0; i < listRef.current.children.length; i++) {
-        if (
-          parentRect.width + parentRect.left <
-          listRef.current.children[i].getBoundingClientRect().left +
-            listRef.current.children[i].getBoundingClientRect().width -
-            1
-        ) {
-          currentStartRef.current = i;
-
-          mainRef.current.scrollLeft =
-            listRef.current.children[i].getBoundingClientRect().left -
-            rect.left;
-
-          return;
-        }
-      }
-    }
-
-    if (direction === "left") {
-      for (let i = listRef.current.children.length - 1; i >= 0; i--) {
-        if (
-          listRef.current.children[i].getBoundingClientRect().left <
-          parentRect.left -
-            parentRect.width +
-            listRef.current.children[i].getBoundingClientRect().width
-        ) {
-          currentStartRef.current = i;
-          mainRef.current.scrollLeft =
-            listRef.current.children[i].getBoundingClientRect().left -
-            rect.left;
-          return;
-        }
-      }
-
-      currentStartRef.current = 0;
-      mainRef.current.scrollLeft =
-        listRef.current.children[0].getBoundingClientRect().left - rect.left;
-      return;
-    }
-  };
 
   if (noItem) return <></>;
 
@@ -312,7 +224,7 @@ export function SideScrollWithNoFetch({
         </svg>
       </button>
       <div
-        ref={mainRef}
+        ref={containerRef}
         className={styles.viewer}
         style={{ height: viewerHeight }}
       >
@@ -324,75 +236,15 @@ export function SideScrollWithNoFetch({
   );
 }
 
-export function MovieTVSideScroll({
-  headerTitleProps,
-  fetchFunction,
-}: {
-  headerTitleProps: headerTitleProps;
-  fetchFunction: (page?: number) => pageFetchDouble<{ data: movieT[] | TVT[] }>;
-}) {
-  const [movieTVs, setMovieTVs] = useState<movieT[] | TVT[]>([]);
-
-  const fetchOperation = async () => {
-    setMovieTVs([]);
-    const res = await fetchFunction();
-
-    if (res.status) {
-      setMovieTVs(res.value.data);
-    }
-
-    return res;
-  };
-
-  return (
-    <SideScroll
-      headerTitleProps={headerTitleProps}
-      showButtons={movieTVs.length > 0}
-      fetchOperation={fetchOperation}
-      viewerHeight="var(--movieTV-card-height)"
-    >
-      {movieTVs.map((e) => (
-        <MovieTVCard key={e.id} data={e}></MovieTVCard>
-      ))}
-    </SideScroll>
-  );
-}
-
-export function ActorSideScroll({
-  headerTitleProps,
-  fetchFunction,
-}: {
-  headerTitleProps: headerTitleProps;
-  fetchFunction: (page?: number) => pageFetchDouble<{ data: actorT[] }>;
-}) {
-  const [actors, setActors] = useState<actorT[]>([]);
-
-  const fetchOperation = async () => {
-    setActors([]);
-    const res = await fetchFunction();
-
-    if (res.status) {
-      setActors(res.value.data);
-    }
-
-    return res;
-  };
-
-  return (
-    <SideScroll
-      headerTitleProps={headerTitleProps}
-      showButtons={actors.length > 0}
-      fetchOperation={fetchOperation}
-      viewerHeight="var(--actor-card-height)"
-    >
-      {actors.map((e) => (
-        <ActorCard key={e.id} data={e}></ActorCard>
-      ))}
-    </SideScroll>
-  );
-}
-
 const MovieTVCard_MEMO = memo(MovieTVCard);
+
+/*
+Renders side scroll div with buttons 
+
+Renders watchlist movies or information about watchlist
+
+Comes with header component
+*/
 
 export function FromYourWatchlistSideScroll() {
   const watchlist = useWatchlist();
@@ -431,6 +283,13 @@ export function FromYourWatchlistSideScroll() {
       </div>
     );
 }
+
+/*
+Renders side scroll div with buttons 
+
+Renders recently viewed movies 
+If there is no recently movie renders nothing
+*/
 
 export function RecentlyViewedSideScroll() {
   const recentlyViewed = useRecentlyViewed();

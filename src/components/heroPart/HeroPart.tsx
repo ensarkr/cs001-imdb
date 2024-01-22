@@ -7,6 +7,10 @@ import CircleLoader from "../circleLoader/CircleLoader";
 import useWatchlistButton from "../../hooks/useWatchListButton";
 import { Link } from "react-router-dom";
 
+/*
+Renders hero part of movie/tv detail page 
+*/
+
 export default function HeroPart({ data }: { data: movieDetailT | TVDetailT }) {
   return (
     <div
@@ -187,6 +191,15 @@ export default function HeroPart({ data }: { data: movieDetailT | TVDetailT }) {
   );
 }
 
+/*
+Renders main trailer of the movie/tv 
+
+If video title includes "trailer" it renders that video
+Else it renders first trailer
+
+If there is no trailer exists it render "Trailer no found"
+*/
+
 function MainTrailer({ data }: { data: movieDetailT | TVDetailT }) {
   const getCurrentVideoLink = () => {
     const trailers = data.videos.filter((e) =>
@@ -218,6 +231,12 @@ function MainTrailer({ data }: { data: movieDetailT | TVDetailT }) {
     </div>
   );
 }
+
+/*
+Renders favorite button
+Which is plus or check icon depending on the movie/tv in watchlist or not
+By clicking states can be switched
+*/
 
 function WatchlistButton({ data }: { data: movieT | TVT }) {
   const { handleClick, inWatchlist, isLoading, watchlistStatus } =

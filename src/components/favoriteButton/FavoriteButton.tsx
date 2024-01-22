@@ -6,6 +6,13 @@ import { useFavorites } from "../../context/FavoritesContext";
 import CircleLoader from "../circleLoader/CircleLoader";
 import Icon from "../icon/Icon";
 
+/*
+Renders favorite button
+Which is filled or unfilled heart depending on the movie/tv in favorites or not
+By clicking states can be switched
+Default height is 100%
+*/
+
 export default function FavoriteButton({
   data,
   unCheckedHeartColor,

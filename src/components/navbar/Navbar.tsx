@@ -45,6 +45,13 @@ export default function Navbar() {
   );
 }
 
+/*
+Renders searchBars 
+
+There is 2 types
+It is chosen by media queries 
+*/
+
 function Search() {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
@@ -171,6 +178,13 @@ function Watchlist() {
     </Link>
   );
 }
+
+/*
+Renders user part 
+
+If user not signed in renders sign in button
+Else renders dropdown menu with multiple choices
+*/
 
 function User() {
   const auth = useAuth();

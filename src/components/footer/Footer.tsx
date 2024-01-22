@@ -1,6 +1,11 @@
 import { RecentlyViewedSideScroll } from "../sideScroll/SideScroll";
 import styles from "./footer.module.css";
 
+/*
+Renders recently viewed side scroll
+And some links
+*/
+
 export default function Footer() {
   return (
     <div className={styles.main}>

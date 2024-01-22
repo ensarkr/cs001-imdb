@@ -3,6 +3,15 @@ import { movieT } from "../../../typings/movie";
 import { TVT } from "../../../typings/tv";
 import styles from "./movieTVWideCard.module.css";
 
+/*
+Renders wide movie/tv card
+
+Main difference between this and default is this is has width at 100%
+Also it has no button
+
+By clicking user can navigate to movie/tv detail page
+*/
+
 export default function MovieTVWideCard({ data }: { data: movieT | TVT }) {
   return (
     <Link

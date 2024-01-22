@@ -9,6 +9,7 @@ import { memo, useEffect, useState } from "react";
 import useFetchSingle from "../../hooks/useFetchSingle";
 import { WideListWithOptions } from "../../components/wideList/WideList";
 import MovieTVWideDetailedCard from "../../components/movieTV/movieTVWideDetailedCard/MovieTVWideDetailedCard";
+import { actorT } from "../../typings/actor";
 
 const MovieTVWideDetailedCard_MEMO = memo(MovieTVWideDetailedCard);
 
@@ -24,22 +25,25 @@ export default function ActorCredits() {
 }
 
 function InnerActorCredits({ actorId }: { actorId: number }) {
-  const actor = useFetchSingle(() => requestActor(actorId));
+  const [actor, setActor] = useState<actorT | undefined>(undefined);
   const movies = useFetchSingle(() => requestActorMovies(actorId));
   const tvs = useFetchSingle(() => requestActorTVs(actorId));
   const [tab, setTab] = useState<"movie" | "tv">("movie");
 
-  console.log(actorId);
-
   useEffect(() => {
-    actor.startFetching();
     movies.startFetching();
+
+    const fetchAndSetActor = async () => {
+      const res = await requestActor(actorId);
+      if (res.status) setActor(res.value);
+    };
+    fetchAndSetActor();
   }, []);
 
   return (
     <div className={styles.main}>
       <div className={styles.content}>
-        <h1>{actor.fetchStatus === "fetched" && actor.data?.name} </h1>
+        <h1>{actor && actor.name} </h1>
 
         <div className={styles.tabs}>
           <button

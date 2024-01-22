@@ -9,6 +9,20 @@ import { useAuth } from "../../context/AuthContext";
 import styles from "./signIn.module.css";
 import CircleLoader from "../../components/circleLoader/CircleLoader";
 
+/*
+It fetches request token on button click
+
+And user redirected to TMDB to authenticate this token
+After this TMDB redirects to this page with some queries
+
+On mount queries checked
+If request token is approved by TMDB
+It requests sessionID
+And user details 
+
+After all this auth.setUpdate called with sessionID and user details 
+*/
+
 export default function SignIn() {
   const [params] = useSearchParams();
   const navigate = useNavigate();
@@ -38,6 +52,7 @@ export default function SignIn() {
 
   const handleClick = async () => {
     if (isLoading) return;
+    setIsLoading(true);
 
     auth.signOut();
     const token = await requestNewRequestToken();

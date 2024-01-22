@@ -1,5 +1,10 @@
 import styles from "./circleLoader.module.css";
 
+/*
+Renders circle loading animation
+Default height is 100%
+*/
+
 export default function CircleLoader({
   color,
   height,

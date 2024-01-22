@@ -26,6 +26,10 @@ const SetWatchlistContext = createContext<React.Dispatch<
   React.SetStateAction<wathlistT>
 > | null>(null);
 
+/*
+Provider fetches all watchlist movies/tvs when user sign ins
+*/
+
 function WatchlistProvider({ children }: { children: ReactNode }) {
   const [watchlist, setWatchlist] = useState<wathlistT>({
     status: "loading",
@@ -44,10 +48,13 @@ function WatchlistProvider({ children }: { children: ReactNode }) {
   }, [auth.user.status]);
 
   const fetchAndSetWatchlist = async (accountID: number, sessionID: string) => {
+    setWatchlist({ status: "loading" });
     const res = await requestAllWatchlist(accountID, sessionID);
 
     if (res.status) {
       setWatchlist({ status: "user", ...res.value });
+    } else {
+      setWatchlist({ status: "guest" });
     }
   };
 
@@ -61,6 +68,15 @@ function WatchlistProvider({ children }: { children: ReactNode }) {
     </>
   );
 }
+
+/*
+Return functions and context
+
+Functions include
+- addToWatchlist = add movie/tv to watchlist
+- removeFromWatchlist = remove movie/tv from watchlist
+- inWatchlist = is movie/tv in watchlist
+*/
 
 function useWatchlist() {
   const watchlist = useContext(WatchlistContext);

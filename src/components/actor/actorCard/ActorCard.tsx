@@ -2,6 +2,12 @@ import { Link } from "react-router-dom";
 import { actorT } from "../../../typings/actor";
 import styles from "./actorCard.module.css";
 
+/*
+Renders actor image ant its name
+If character exist it also renders character at bottom
+By clicking user can navigate to actor credits
+*/
+
 export default function ActorCard({
   data,
   color = "white",

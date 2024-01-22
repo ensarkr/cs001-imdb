@@ -25,6 +25,10 @@ const SetFavoritesContext = createContext<React.Dispatch<
   React.SetStateAction<favoritesT>
 > | null>(null);
 
+/*
+Provider fetches all favorite movies/tvs when user sign ins
+*/
+
 function FavoritesProvider({ children }: { children: ReactNode }) {
   const [favorites, setFavorites] = useState<favoritesT>({
     status: "loading",
@@ -60,6 +64,15 @@ function FavoritesProvider({ children }: { children: ReactNode }) {
     </>
   );
 }
+
+/*
+Return functions and context
+
+Functions include
+- addToFavorites = add movie/tv to favorite
+- removeFromFavorites = remove movie/tv from favorite
+- isFavorite = is movie/tv in favorites
+*/
 
 function useFavorites() {
   const favorites = useContext(FavoritesContext);

@@ -3,6 +3,10 @@ import { useWatchlist } from "../context/WatchListContext";
 import { movieT } from "../typings/movie";
 import { TVT } from "../typings/tv";
 
+/* 
+ Watchlist button functionality
+*/
+
 export default function useWatchlistButton(data: movieT | TVT) {
   const watchlist = useWatchlist();
   const [isLoading, setIsLoading] = useState(false);

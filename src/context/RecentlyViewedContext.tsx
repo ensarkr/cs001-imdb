@@ -24,6 +24,10 @@ const SetRecentlyViewedContext = createContext<React.Dispatch<
   React.SetStateAction<recentlyViewedT>
 > | null>(null);
 
+/*
+Provider loads all recently viewed movies/tvs on mount from localStorage
+*/
+
 function RecentlyViewedProvider({ children }: { children: ReactNode }) {
   const [recentlyViewed, setRecentlyViewed] = useState<recentlyViewedT>({
     status: "loading",
@@ -57,6 +61,14 @@ function RecentlyViewedProvider({ children }: { children: ReactNode }) {
     </>
   );
 }
+
+/*
+Return functions and context
+
+Functions include
+- addToRecentlyViewed = add movie/tv to recentlyViewed (storage limit is 20, last ones removed)
+- clearRecentlyViewed = clear all movies/tvs from recentlyViewed
+*/
 
 function useRecentlyViewed() {
   const recentlyViewed = useContext(RecentlyViewedContext);

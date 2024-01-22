@@ -7,6 +7,14 @@ import Icon from "../../icon/Icon";
 import CircleLoader from "../../circleLoader/CircleLoader";
 import useWatchlistButton from "../../../hooks/useWatchListButton";
 
+/*
+Renders detailed movie/tv card
+
+Main difference between this and default is this has overview part
+
+By clicking user can navigate to movie/tv detail page
+*/
+
 export default function MovieTVWideDetailedCard({
   data,
 }: {

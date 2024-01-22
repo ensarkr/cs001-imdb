@@ -6,6 +6,11 @@ import {
 } from "../functions/requests";
 import { useRecentlyViewed } from "./RecentlyViewedContext";
 
+/*
+Provider checks if session id is stored in localStorage on mount
+If exist fetches user details and stores in context
+*/
+
 type authT =
   | { status: "loading" }
   | { status: "guest" }
@@ -47,6 +52,14 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     </SetAuthContext.Provider>
   );
 }
+
+/*
+Return functions and context
+
+Functions include
+- updateAuth = setsAuth and stores sessionID
+- signOut = setsAuth and removes sessionID
+*/
 
 function useAuth() {
   const auth = useContext(AuthContext);

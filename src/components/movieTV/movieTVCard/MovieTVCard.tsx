@@ -7,6 +7,19 @@ import Icon from "../../icon/Icon";
 import CircleLoader from "../../circleLoader/CircleLoader";
 import useWatchlistButton from "../../../hooks/useWatchListButton";
 
+/*
+Renders movie/tv card
+
+Which css width property is used chosen via useAlternativeWidth prop
+  width: var(--card-width);
+  width: var(--alternative-card-width);
+
+Movie or tv can be added to watchlist or favorite using rendered button
+Movie or tv can be removed from watchlist or favorite using rendered button
+
+By clicking user can navigate to movie/tv detail page
+*/
+
 export default function MovieTVCard({
   data,
   color = "black",

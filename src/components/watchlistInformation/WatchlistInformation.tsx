@@ -4,6 +4,12 @@ import DotLoader from "../dotLoader/dotLoader";
 import Icon from "../icon/Icon";
 import styles from "./watchlistInformation.module.css";
 
+/*
+Renders information about watchlist
+
+Default height is 500px
+*/
+
 export default function WatchlistInformation({
   status,
   color,

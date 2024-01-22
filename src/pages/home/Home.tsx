@@ -1,8 +1,8 @@
+import ActorCard from "../../components/actor/actorCard/ActorCard";
 import BigHeaderTitle from "../../components/bigHeaderTitle/BigHeaderTitle";
-import {
-  ActorSideScroll,
+import MovieTVCard from "../../components/movieTV/movieTVCard/MovieTVCard";
+import SideScroll, {
   FromYourWatchlistSideScroll,
-  MovieTVSideScroll,
 } from "../../components/sideScroll/SideScroll";
 import {
   requestTopRatedMovies,
@@ -20,52 +20,76 @@ export default function Home() {
       <div className={styles.content}>
         <BigHeaderTitle
           title="What to watch"
-          link={{ href: "/whatToWatch/topPicks", text: "Get more recommendations" }}
+          link={{
+            href: "/whatToWatch/topPicks",
+            text: "Get more recommendations",
+          }}
         ></BigHeaderTitle>
-        <MovieTVSideScroll
+
+        <SideScroll
+          fetchOperation={requestPopularMovies}
+          renderItem={(e) => <MovieTVCard data={e} key={e.id}></MovieTVCard>}
+          viewerHeight="var(--movieTV-card-height)"
           headerTitleProps={{
             title: "Top picks",
             subTitle: "TV shows and movies just for you",
             href: "/whatToWatch/topPicks",
           }}
-          fetchFunction={requestPopularMovies}
-        ></MovieTVSideScroll>
+        ></SideScroll>
+
         <FromYourWatchlistSideScroll></FromYourWatchlistSideScroll>
-        <MovieTVSideScroll
+
+        <SideScroll
+          fetchOperation={requestTopRatedMovies}
+          renderItem={(e) => <MovieTVCard data={e} key={e.id}></MovieTVCard>}
+          viewerHeight="var(--movieTV-card-height)"
           headerTitleProps={{
             title: "Top 20 on IMDb",
             href: "/whatToWatch/topIMDb",
           }}
-          fetchFunction={requestTopRatedMovies}
-        ></MovieTVSideScroll>
+        ></SideScroll>
+
         <BigHeaderTitle title="Explore what's streaming"></BigHeaderTitle>
-        <MovieTVSideScroll
+
+        <SideScroll
+          fetchOperation={requestAiringTVs}
+          renderItem={(e) => <MovieTVCard data={e} key={e.id}></MovieTVCard>}
+          viewerHeight="var(--movieTV-card-height)"
           headerTitleProps={{
             title: "PRIME VIDEO",
             subTitle: "Included with Prime",
           }}
-          fetchFunction={requestAiringTVs}
-        ></MovieTVSideScroll>
+        ></SideScroll>
+
         <BigHeaderTitle title="Explore Movies & TV shows"></BigHeaderTitle>
-        <MovieTVSideScroll
+
+        <SideScroll
+          fetchOperation={requestNowPlayingMovies}
+          renderItem={(e) => <MovieTVCard data={e} key={e.id}></MovieTVCard>}
+          viewerHeight="var(--movieTV-card-height)"
           headerTitleProps={{
             title: "In theaters",
             subTitle: "Showtimes near you",
           }}
-          fetchFunction={requestNowPlayingMovies}
-        ></MovieTVSideScroll>
-        <MovieTVSideScroll
+        ></SideScroll>
+
+        <SideScroll
+          fetchOperation={requestUpcomingMovies}
+          renderItem={(e) => <MovieTVCard data={e} key={e.id}></MovieTVCard>}
+          viewerHeight="var(--movieTV-card-height)"
           headerTitleProps={{
             title: "Coming soon to theaters",
           }}
-          fetchFunction={requestUpcomingMovies}
-        ></MovieTVSideScroll>
-        <ActorSideScroll
+        ></SideScroll>
+
+        <SideScroll
+          fetchOperation={requestPopularActors}
+          renderItem={(e) => <ActorCard data={e} key={e.id}></ActorCard>}
+          viewerHeight="var(--actor-card-height)"
           headerTitleProps={{
             title: "Popular actors",
           }}
-          fetchFunction={requestPopularActors}
-        ></ActorSideScroll>
+        ></SideScroll>
       </div>
     </main>
   );
