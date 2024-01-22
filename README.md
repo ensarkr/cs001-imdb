@@ -25,9 +25,9 @@ This case-study is IMDb clone with limited functionality. It uses TMDB api for b
 - Movie/TV Detail - See movie/tv detail.
 - Actor Credits - See actor credits.
 - Search Page - Search Movie/TV/Actors.
-- [Top Picks](https://cs001-imdb.vercel.app/whatToWatch/topPicks) - Popular movies.
-- [From your watchlist](https://cs001-imdb.vercel.app/whatToWatch/fromYourWatchlist) - See your watchlist.
-- [Top IMDb](https://cs001-imdb.vercel.app/whatToWatch/topIMDb) - Top rated movies.
+- Top Picks - Popular movies.
+- From your watchlist - See your watchlist.
+- Top IMDb - Top rated movies.
 
 ## Live Demo
 

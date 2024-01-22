@@ -84,6 +84,7 @@
 .username {
   width: 5rem;
   text-wrap: nowrap;
+  overflow: hidden;
 }
 
 .dropdownButton {
