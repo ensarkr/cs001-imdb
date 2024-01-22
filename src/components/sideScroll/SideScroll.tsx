@@ -255,7 +255,10 @@ export function FromYourWatchlistSideScroll() {
   ) {
     return (
       <SideScrollWithNoFetch
-        headerTitleProps={{ title: "From your Watchlist", href: "/" }}
+        headerTitleProps={{
+          title: "From your Watchlist",
+          href: "/whatToWatch/fromYourWatchlist",
+        }}
         viewerHeight="var(--movieTV-card-height)"
       >
         {[
@@ -269,7 +272,10 @@ export function FromYourWatchlistSideScroll() {
   } else
     return (
       <div className={styles.main}>
-        <HeaderTitle title="From your Watchlist" href="/whatToWatch/fromYourWatchlist"></HeaderTitle>
+        <HeaderTitle
+          title="From your Watchlist"
+          href="/whatToWatch/fromYourWatchlist"
+        ></HeaderTitle>
         <div
           className={[styles.viewer, styles.center].join(" ")}
           style={{ height: "var(--movieTV-card-height)" }}
